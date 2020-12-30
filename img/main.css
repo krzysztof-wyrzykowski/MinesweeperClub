@@ -1,0 +1,115 @@
+* {
+    box-sizing: border-box;
+}
+body {
+margin: 0;
+padding: 0;
+background-color: #417241;
+font-family: 'Press Start 2P', cursive;
+}
+.header {
+    box-sizing: content-box;
+    text-align: center;
+    font-size: 64px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background-color: #284e28;
+    border-bottom: 10px solid #203820;
+}
+.container {
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 1000px;
+    background-color:#c0c0c0;
+    min-height: 1000px;
+    border: 10px solid #959393;
+}
+.countersBox {
+    border-bottom: 10px solid #959393;
+    text-align: center;
+}
+.counter {
+    height: 50px;
+    border-top: 4px outset #9d9d9d;
+    border-left: 4px outset #9c9c9c;
+    border-right: 4px outset #d1d1d1;
+    border-bottom: 4px outset #d1d1d1;
+    margin: 8px 0;
+    display: inline-block;
+    font-size: 24px;
+    text-align: center;
+    line-height: 40px;
+    top: 10px;
+}
+#face {
+    width: 50px; 
+    color: transparent;
+    white-space: nowrap;
+    background-size: cover; 
+    background-image: url('img/slightlySmilingFace.png'); 
+}
+.counterBox, .counter, #gamePanel, #tile, #detonatedTile, #flaggedTile {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera*/
+}
+#face:hover {
+    cursor: pointer;
+}
+#timer {
+    min-width: 200px;
+    
+}
+.bombCounter{
+    min-width: 80px;
+}
+.board {
+    text-align: center;
+    padding-top: 40px;
+    
+}
+#gamePanel {
+    box-sizing: content-box;
+    margin-left: auto;
+    margin-right: auto;
+    width: 500px;
+    height: 500px;
+    border: 1px solid #7c7a7a;
+}
+.flaggedTile {
+    width: 50px;
+    height: 50px;
+    border-top: 5px outset #bebebe;
+    border-left: 5px outset #bebebe;
+    border-right: 5px outset #d1d1d1;
+    border-bottom: 5px outset #d1d1d1;
+    display: inline-block;
+    background-image: url('img/flag.png');
+}
+.detonatedTile {
+    width: 50px;
+    height: 50px;
+    border: 2px solid #a5a4a4;
+    background-color: #959393;
+    display: inline-block;
+    background: no-repeat center/100%;
+}
+.tile {
+    width: 50px;
+    height: 50px;
+    border-top: 5px outset #bebebe;
+    border-left: 5px outset #bebebe;
+    border-right: 5px outset #d1d1d1;
+    border-bottom: 5px outset #d1d1d1;
+    display: inline-block;
+    background-color: #959393;
+}
+.tile:hover {
+    /* background-color:#555; */
+    opacity: .6;
+}
