@@ -53,12 +53,12 @@ function createTiles(boardSize) {
         } 
     }
 }
-function drawBombs() {
+function drawBombs(boardSize) {
 
     let bombsLeft=10;
 
     while (bombsLeft>0) {
-        let drawedID = Math.floor(Math.random() * 100);
+        let drawedID = Math.floor(Math.random() * (boardSize*boardSize));
     if(tiles[drawedID].isBomb !== true) {
         tiles[drawedID].isBomb = true;
         bombsLeft--;
@@ -103,7 +103,7 @@ function drawBoard (boardSize) {
     }
 
     createTiles(boardSize);
-    drawBombs();
+    drawBombs(boardSize);
 }
 function revealTile (tileID) {
     
