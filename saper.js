@@ -90,15 +90,15 @@ function addTilesOnClick () {
         document.getElementById('tile'+i).addEventListener('contextmenu', event => event.preventDefault());
     }
 }
-function drawBoard () {
-    remainingToDetonate = 10 * 10 - 10;
+function drawBoard (boardSize) {
+    remainingToDetonate =  boardSize * boardSize - boardSize;
     nrOfBomb = 10;
     isAnyBombDetonated = false;
     flaggedTiles = 0;
     finished = false;
     firstDetonated = false; 
 
-    for (let i = 0; i<=99;i++) {
+    for (let i = 0; i<(boardSize*boardSize);i++) {
         tiles.pop();
     }
 
@@ -158,7 +158,7 @@ function detonation (tileID) {
                     isAnyBombDetonated = true;   
                 });
             } else {
-                drawBoard();
+                drawBoard(size);
                 detonation(tileID);
             }
 
@@ -233,7 +233,7 @@ function restart() {
 
     document.querySelector('#face').style.backgroundImage = 'url("img/slightlySmilingFace.png")';
 
-    drawBoard();
+    drawBoard(size);
     refreshBombCounter();
     
 }
@@ -241,7 +241,7 @@ document.addEventListener("DOMContentLoaded", () => {
    document.querySelector("#face").addEventListener("click", function() {restart();});
 
     showBoard(size);
-    drawBoard();
+    drawBoard(size);
     refreshBombCounter();
     addTilesOnClick(); 
 })
