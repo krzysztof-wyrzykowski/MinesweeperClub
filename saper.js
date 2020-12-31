@@ -83,8 +83,8 @@ function showBoard (boardSize) {
     }
        
 }
-function addTilesOnClick () { 
-    for(let i = 0;i<100;i++) { 
+function addTilesOnClick (boardSize) { 
+    for(let i = 0;i<(boardSize*boardSize);i++) { 
         document.getElementById('tile'+i).addEventListener("click", () => {detonation(i);});
         document.getElementById('tile'+i).addEventListener("contextmenu", () => {toggleFlag(i);});
         document.getElementById('tile'+i).addEventListener('contextmenu', event => event.preventDefault());
@@ -243,7 +243,7 @@ document.addEventListener("DOMContentLoaded", () => {
     showBoard(size);
     drawBoard(size);
     refreshBombCounter();
-    addTilesOnClick(); 
+    addTilesOnClick(size); 
 })
 
 
