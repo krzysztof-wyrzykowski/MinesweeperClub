@@ -5,6 +5,7 @@ let flaggedTiles
 let finished 
 let firstDetonated
 let tiles = []
+let size = 10
 
 class Tile {
     constructor(ID,neighbours) {
@@ -71,11 +72,11 @@ function drawBombs() {
 
 
 
-function showBoard () {
-    for(let i = 0;i<100;i++) {
+function showBoard (boardSize) {
+    for(let i = 0;i<(boardSize*boardSize);i++) {
         document.querySelector('#gamePanel').innerHTML += '<div class="tile" id="tile'+i+'"></div>' ;
 
-        if((i+1)%10===0) {
+        if((i+1)%boardSize===0) {
             document.querySelector('#gamePanel').innerHTML += '<br>' ;   
         }
         
@@ -239,7 +240,7 @@ function restart() {
 document.addEventListener("DOMContentLoaded", () => {
    document.querySelector("#face").addEventListener("click", function() {restart();});
 
-    showBoard();
+    showBoard(size);
     drawBoard();
     refreshBombCounter();
     addTilesOnClick(); 
