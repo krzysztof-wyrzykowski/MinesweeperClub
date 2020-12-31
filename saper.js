@@ -19,32 +19,32 @@ class Tile {
     }
 }
 
-function createTiles() {
+function createTiles(boardSize) {
 
-    for(let i=0;i<100;i++) {
+    for(let i=0;i<(boardSize*boardSize);i++) {
         switch (true) {
             case (i===0): //top-left corner
                 tiles.push(new Tile(i,[i+1,i+10,i+11]));
             break;
-            case (i===9): //top-right corner
+            case (i===(boardSize-1)): //top-right corner
                 tiles.push(new Tile(i,[i-1,i+9,i+10]));
             break;
-            case (i===90): //bottom-left corner
+            case (i===(boardSize*(boardSize-1))): //bottom-left corner
                 tiles.push(new Tile(i,[i-10,i-9,i+1]));
             break;
-            case (i===99): //bottom-right corner
+            case (i===(boardSize*boardSize-1)): //bottom-right corner
                 tiles.push(new Tile(i,[i-11,i-10,i-1]));
             break;
-            case (i>0 && i<9): // top side
+            case (i>0 && i<(boardSize-1)): // top side
                 tiles.push(new Tile(i,[i-1,i+1,i+9,i+10,i+11]));
             break;
-            case (i>90 && i<99): //bottom side
+            case (i>(boardSize*(boardSize-1)) && i<(boardSize*boardSize-1)): //bottom side
                 tiles.push(new Tile(i,[i-11,i-10,i-9,i-1,i+1]));
             break;
-            case (i%10 === 0): //left side
+            case (i%boardSize === 0): //left side
                 tiles.push(new Tile(i,[i-10,i-9,i+1,i+10,i+11]));
             break;
-            case ((i+1)%10 === 0): //right side
+            case ((i+1)%boardSize === 0): //right side
                 tiles.push(new Tile(i,[i-11,i-10,i-1,i+9,i+10]));
             break;
             default:
@@ -102,7 +102,7 @@ function drawBoard (boardSize) {
         tiles.pop();
     }
 
-    createTiles();
+    createTiles(boardSize);
     drawBombs();
 }
 function revealTile (tileID) {
