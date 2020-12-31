@@ -142,6 +142,7 @@ function detonation (tileID) {
 
             if (firstDetonated === true) {
                 revealTile(tileID);
+                isAnyBombDetonated = true; 
 
                 document.querySelector('#face').style.backgroundImage = 'url("img/explodingHead.png")';
 
@@ -152,9 +153,7 @@ function detonation (tileID) {
                     } else if (el.flagged === true) {
                         document.getElementById('tile'+i).style.backgroundImage = 'url("img/crossedFlag.png")';
                         document.getElementById('tile'+i).classList.remove('tile');
-                    }
-
-                    isAnyBombDetonated = true;   
+                    }    
                 });
             } else {
                 drawBoard();
