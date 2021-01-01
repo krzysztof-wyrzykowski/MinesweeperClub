@@ -136,7 +136,7 @@ function revealTile (tileID) {
     }  
 }
 function detonation (tileID) {
-    if (isAnyBombDetonated === false && tiles[tileID].flagged === false) {
+    if (isAnyBombDetonated === false && tiles[tileID].flagged === false && finished == false) {
 
         if (tiles[tileID].isBomb === true) {
 
