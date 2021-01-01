@@ -74,16 +74,19 @@ font-family: 'Press Start 2P', cursive;
     
 }
 #gamePanel {
+    --gamePanelWidth : 500px;
+    --gamePanelHeight : 500px;
+    --tileSize : 50px;
     box-sizing: content-box;
     margin-left: auto;
     margin-right: auto;
-    width: 500px;
-    height: 500px;
+    width: var(--gamePanelWidth);
+    height: var(--gamePanelHeight);
     border: 1px solid #7c7a7a;
 }
 .flaggedTile {
-    width: 50px;
-    height: 50px;
+    width: var(--tileSize);
+    height: var(--tileSize);
     border-top: 5px outset #bebebe;
     border-left: 5px outset #bebebe;
     border-right: 5px outset #d1d1d1;
@@ -92,16 +95,16 @@ font-family: 'Press Start 2P', cursive;
     background-image: url('img/flag.png');
 }
 .detonatedTile {
-    width: 50px;
-    height: 50px;
+    width: var(--tileSize);
+    height: var(--tileSize);
     border: 2px solid #a5a4a4;
     background-color: #959393;
     display: inline-block;
     background: no-repeat center/100%;
 }
 .tile {
-    width: 50px;
-    height: 50px;
+    width: var(--tileSize);
+    height: var(--tileSize);
     border-top: 5px outset #bebebe;
     border-left: 5px outset #bebebe;
     border-right: 5px outset #d1d1d1;
