@@ -1,5 +1,5 @@
 let remainingToDetonate 
-let nrOfBomb 
+let nrOfBomb = 10
 let isAnyBombDetonated 
 let flaggedTiles 
 let finished 
@@ -56,7 +56,7 @@ function createTiles(boardSize) {
 }
 function drawBombs(boardSize) {
 
-    let bombsLeft=10;
+    let bombsLeft = nrOfBomb;
 
     while (bombsLeft>0) {
         let drawedID = Math.floor(Math.random() * (boardSize*boardSize));
@@ -95,7 +95,6 @@ function addTilesOnClick (boardSize) {
 }
 function drawBoard (boardSize) {
     console.log("function triggered");
-    nrOfBomb = 10;
     remainingToDetonate =  boardSize * boardSize - nrOfBomb;
     isAnyBombDetonated = false;
     flaggedTiles = 0;
@@ -250,6 +249,7 @@ function changeLevel(currentLevel) {
     switch(currentLevel){
         case 1: {}
             size = 20;
+            nrOfBomb = 40;
             gamePanel.style.setProperty("--gamePanelWidth", "900px");
             gamePanel.style.setProperty("--gamePanelHeight", "900px");
             gamePanel.style.setProperty("--tileSize", "45px");
@@ -260,6 +260,7 @@ function changeLevel(currentLevel) {
         break;   
         case 2:
             size = 30;
+            nrOfBomb = 90;
             gamePanel.style.setProperty("--gamePanelWidth", "990px");
             gamePanel.style.setProperty("--gamePanelHeight", "990px");
             gamePanel.style.setProperty("--tileSize", "33px");
@@ -270,11 +271,12 @@ function changeLevel(currentLevel) {
         break;
         case 3:
             size = 10;
+            nrOfBomb = 10;
             gamePanel.style.setProperty("--gamePanelWidth", "500px");
             gamePanel.style.setProperty("--gamePanelHeight", "500px");
             gamePanel.style.setProperty("--tileSize", "50px");
             showBoard(10);
-            drawBoard(10);
+            drawBoard(10,10);
             addTilesOnClick(10);
             refreshBombCounter();
         break;
