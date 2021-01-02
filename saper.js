@@ -236,6 +236,7 @@ function changeLevel(currentLevel) {
             gamePanel.style.setProperty("--gamePanelWidth", "900px");
             gamePanel.style.setProperty("--gamePanelHeight", "900px");
             gamePanel.style.setProperty("--tileSize", "45px");
+            gamePanel.style.setProperty("--tileBorder", "4px");
             showBoard(20);
             drawBoard(20);
             addTilesOnClick(20);
@@ -247,6 +248,7 @@ function changeLevel(currentLevel) {
             gamePanel.style.setProperty("--gamePanelWidth", "960px");
             gamePanel.style.setProperty("--gamePanelHeight", "960px");
             gamePanel.style.setProperty("--tileSize", "32px");
+            gamePanel.style.setProperty("--tileBorder", "3px");
             showBoard(30);
             drawBoard(30);
             addTilesOnClick(30);
@@ -258,6 +260,7 @@ function changeLevel(currentLevel) {
             gamePanel.style.setProperty("--gamePanelWidth", "500px");
             gamePanel.style.setProperty("--gamePanelHeight", "500px");
             gamePanel.style.setProperty("--tileSize", "50px");
+            gamePanel.style.setProperty("--tileBorder", "5px");
             showBoard(10);
             drawBoard(10,10);
             addTilesOnClick(10);

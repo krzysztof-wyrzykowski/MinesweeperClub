@@ -81,6 +81,7 @@ font-family: 'Press Start 2P', cursive;
     --gamePanelWidth : 500px;
     --gamePanelHeight : 500px;
     --tileSize : 50px;
+    --tileBorder : 5px;
     box-sizing: content-box;
     margin-left: auto;
     margin-right: auto;
@@ -110,10 +111,10 @@ font-family: 'Press Start 2P', cursive;
 .tile {
     width: var(--tileSize);
     height: var(--tileSize);
-    border-top: 5px outset #bebebe;
-    border-left: 5px outset #bebebe;
-    border-right: 5px outset #d1d1d1;
-    border-bottom: 5px outset #d1d1d1;
+    border-top: var(--tileBorder) outset #bebebe;
+    border-left: var(--tileBorder) outset #bebebe;
+    border-right: var(--tileBorder) outset #d1d1d1;
+    border-bottom: var(--tileBorder) outset #d1d1d1;
     display: inline-block;
     background-color: #959393;
 }
