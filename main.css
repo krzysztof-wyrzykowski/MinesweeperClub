@@ -97,6 +97,7 @@ font-family: 'Press Start 2P', cursive;
     border-bottom: 5px outset #d1d1d1;
     display: inline-block;
     background-image: url('img/flag.png');
+    background-size: cover;
 }
 .detonatedTile {
     width: var(--tileSize);

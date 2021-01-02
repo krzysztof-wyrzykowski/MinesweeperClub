@@ -19,7 +19,6 @@ class Tile {
         
     }
 }
-
 function createTiles(boardSize) {
 
     for(let i=0;i<(boardSize*boardSize);i++) {
@@ -50,7 +49,6 @@ function createTiles(boardSize) {
             break;
             default:
                 tiles.push(new Tile(i,[i-boardSize-1,i-boardSize,i-boardSize+1,i-1,i+1,i+boardSize-1,i+boardSize,i+boardSize+1]));
-            
         } 
     } console.log(tiles);
 }
@@ -70,9 +68,6 @@ function drawBombs(boardSize) {
     }
 }
 }
-
-
-
 function showBoard (boardSize) {
     gamePanel = document.querySelector('#gamePanel');
     gamePanel.innerHTML = "";
@@ -81,10 +76,8 @@ function showBoard (boardSize) {
 
         if((i+1)%boardSize===0) {
             gamePanel.innerHTML += '<br>' ;   
-        }
-        
-    }
-       
+        } 
+    }    
 }
 function addTilesOnClick (boardSize) { 
     for(let i = 0;i<(boardSize*boardSize);i++) { 
@@ -103,8 +96,7 @@ function drawBoard (boardSize) {
     
     let nrOfTiles = tiles.length;
     for (let i = 0; i<nrOfTiles;i++) {
-        tiles.pop();
-        
+        tiles.pop();      
     }
     console.log(tiles);
     createTiles(boardSize);
@@ -130,9 +122,6 @@ function revealTile (tileID) {
                 tiles[tileID].exposed = true;
                 remainingToDetonate -= 1;
         }
-
-        
-        
 
         if(remainingToDetonate === 0) {
             document.querySelector('#face').style.backgroundImage = 'url("img/smilingFaceWithSunglasses.png")';
@@ -173,8 +162,7 @@ function detonation (tileID) {
             tiles[tileID].neighbours.forEach ( el => {
                 detonation(el);
         });
-
-            
+   
         } else {
             revealTile(tileID);
         }
@@ -200,10 +188,7 @@ function toggleFlag(tileID) {
             flaggedTiles -= 1;
         } 
         refreshBombCounter();
-        
-
-    }
-    
+    }  
 }
 function refreshBombCounter () {
     switch (true) {
@@ -234,8 +219,6 @@ function restart() {
         el.style.removeProperty('background-image');
     });
 
-
-
     document.querySelector('#face').style.backgroundImage = 'url("img/slightlySmilingFace.png")';
 
     drawBoard(size);
@@ -261,9 +244,9 @@ function changeLevel(currentLevel) {
         case 2:
             size = 30;
             nrOfBomb = 90;
-            gamePanel.style.setProperty("--gamePanelWidth", "990px");
-            gamePanel.style.setProperty("--gamePanelHeight", "990px");
-            gamePanel.style.setProperty("--tileSize", "33px");
+            gamePanel.style.setProperty("--gamePanelWidth", "960px");
+            gamePanel.style.setProperty("--gamePanelHeight", "960px");
+            gamePanel.style.setProperty("--tileSize", "32px");
             showBoard(30);
             drawBoard(30);
             addTilesOnClick(30);
