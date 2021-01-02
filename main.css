@@ -20,7 +20,7 @@ font-family: 'Press Start 2P', cursive;
     margin-top: 20px;
     margin-left: auto;
     margin-right: auto;
-    width: 1000px;
+    width: 1020px;
     background-color:#c0c0c0;
     min-height: 1000px;
     border: 10px solid #959393;
@@ -49,6 +49,10 @@ font-family: 'Press Start 2P', cursive;
     background-size: cover; 
     background-image: url('img/slightlySmilingFace.png'); 
 }
+#levelButton {
+    width: 50px;
+    background-color: #959393;
+}
 .counterBox, .counter, #gamePanel, #tile, #detonatedTile, #flaggedTile {
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
@@ -58,7 +62,7 @@ font-family: 'Press Start 2P', cursive;
     user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera*/
 }
-#face:hover {
+#face:hover, #levelButton:hover {
     cursor: pointer;
 }
 #timer {
@@ -70,42 +74,47 @@ font-family: 'Press Start 2P', cursive;
 }
 .board {
     text-align: center;
-    padding-top: 40px;
+    padding: 40px 0;
     
 }
 #gamePanel {
+    --gamePanelWidth : 500px;
+    --gamePanelHeight : 500px;
+    --tileSize : 50px;
+    --tileBorder : 5px;
     box-sizing: content-box;
     margin-left: auto;
     margin-right: auto;
-    width: 500px;
-    height: 500px;
+    width: var(--gamePanelWidth);
+    height: var(--gamePanelHeight);
     border: 1px solid #7c7a7a;
 }
 .flaggedTile {
-    width: 50px;
-    height: 50px;
+    width: var(--tileSize);
+    height: var(--tileSize);
     border-top: 5px outset #bebebe;
     border-left: 5px outset #bebebe;
     border-right: 5px outset #d1d1d1;
     border-bottom: 5px outset #d1d1d1;
     display: inline-block;
     background-image: url('img/flag.png');
+    background-size: cover;
 }
 .detonatedTile {
-    width: 50px;
-    height: 50px;
+    width: var(--tileSize);
+    height: var(--tileSize);
     border: 2px solid #a5a4a4;
     background-color: #959393;
     display: inline-block;
     background: no-repeat center/100%;
 }
 .tile {
-    width: 50px;
-    height: 50px;
-    border-top: 5px outset #bebebe;
-    border-left: 5px outset #bebebe;
-    border-right: 5px outset #d1d1d1;
-    border-bottom: 5px outset #d1d1d1;
+    width: var(--tileSize);
+    height: var(--tileSize);
+    border-top: var(--tileBorder) outset #bebebe;
+    border-left: var(--tileBorder) outset #bebebe;
+    border-right: var(--tileBorder) outset #d1d1d1;
+    border-bottom: var(--tileBorder) outset #d1d1d1;
     display: inline-block;
     background-color: #959393;
 }

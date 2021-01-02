@@ -1,10 +1,12 @@
 let remainingToDetonate 
-let nrOfBomb 
+let nrOfBomb = 10
 let isAnyBombDetonated 
 let flaggedTiles 
 let finished 
 let firstDetonated
 let tiles = []
+let size = 10
+let level = 1
 
 class Tile {
     constructor(ID,neighbours) {
@@ -17,47 +19,45 @@ class Tile {
         
     }
 }
+function createTiles(boardSize) {
 
-function createTiles() {
-
-    for(let i=0;i<100;i++) {
+    for(let i=0;i<(boardSize*boardSize);i++) {
         switch (true) {
             case (i===0): //top-left corner
-                tiles.push(new Tile(i,[i+1,i+10,i+11]));
+                tiles.push(new Tile(i,[i+1,i+boardSize,i+boardSize+1]));
             break;
-            case (i===9): //top-right corner
-                tiles.push(new Tile(i,[i-1,i+9,i+10]));
+            case (i===(boardSize-1)): //top-right corner
+                tiles.push(new Tile(i,[i-1,i+boardSize-1,i+boardSize]));
             break;
-            case (i===90): //bottom-left corner
-                tiles.push(new Tile(i,[i-10,i-9,i+1]));
+            case (i===(boardSize*(boardSize-1))): //bottom-left corner
+                tiles.push(new Tile(i,[i-boardSize,i-boardSize+1,i+1]));
             break;
-            case (i===99): //bottom-right corner
-                tiles.push(new Tile(i,[i-11,i-10,i-1]));
+            case (i===(boardSize*boardSize-1)): //bottom-right corner
+                tiles.push(new Tile(i,[i-boardSize-1,i-boardSize,i-1]));
             break;
-            case (i>0 && i<9): // top side
-                tiles.push(new Tile(i,[i-1,i+1,i+9,i+10,i+11]));
+            case (i>0 && i<(boardSize-1)): // top side
+                tiles.push(new Tile(i,[i-1,i+1,i+boardSize-1,i+boardSize,i+boardSize+1]));
             break;
-            case (i>90 && i<99): //bottom side
-                tiles.push(new Tile(i,[i-11,i-10,i-9,i-1,i+1]));
+            case (i>(boardSize*(boardSize-1)) && i<(boardSize*boardSize-1)): //bottom side
+                tiles.push(new Tile(i,[i-boardSize-1,i-boardSize,i-boardSize+1,i-1,i+1]));
             break;
-            case (i%10 === 0): //left side
-                tiles.push(new Tile(i,[i-10,i-9,i+1,i+10,i+11]));
+            case (i%boardSize === 0): //left side
+                tiles.push(new Tile(i,[i-boardSize,i-boardSize+1,i+1,i+boardSize,i+boardSize+1]));
             break;
-            case ((i+1)%10 === 0): //right side
-                tiles.push(new Tile(i,[i-11,i-10,i-1,i+9,i+10]));
+            case ((i+1)%boardSize === 0): //right side
+                tiles.push(new Tile(i,[i-boardSize-1,i-boardSize,i-1,i+boardSize-1,i+boardSize]));
             break;
             default:
-                tiles.push(new Tile(i,[i-11,i-10,i-9,i-1,i+1,i+9,i+10,i+11]));
-            
+                tiles.push(new Tile(i,[i-boardSize-1,i-boardSize,i-boardSize+1,i-1,i+1,i+boardSize-1,i+boardSize,i+boardSize+1]));
         } 
-    }
+    } console.log(tiles);
 }
-function drawBombs() {
+function drawBombs(boardSize) {
 
-    let bombsLeft=10;
+    let bombsLeft = nrOfBomb;
 
     while (bombsLeft>0) {
-        let drawedID = Math.floor(Math.random() * 100);
+        let drawedID = Math.floor(Math.random() * (boardSize*boardSize));
     if(tiles[drawedID].isBomb !== true) {
         tiles[drawedID].isBomb = true;
         bombsLeft--;
@@ -68,41 +68,39 @@ function drawBombs() {
     }
 }
 }
+function showBoard (boardSize) {
+    gamePanel = document.querySelector('#gamePanel');
+    gamePanel.innerHTML = "";
+    for(let i = 0;i<(boardSize*boardSize);i++) {
+        gamePanel.innerHTML += '<div class="tile" id="tile'+i+'"></div>' ;
 
-
-
-function showBoard () {
-    for(let i = 0;i<100;i++) {
-        document.querySelector('#gamePanel').innerHTML += '<div class="tile" id="tile'+i+'"></div>' ;
-
-        if((i+1)%10===0) {
-            document.querySelector('#gamePanel').innerHTML += '<br>' ;   
-        }
-        
-    }
-       
+        if((i+1)%boardSize===0) {
+            gamePanel.innerHTML += '<br>' ;   
+        } 
+    }    
 }
-function addTilesOnClick () { 
-    for(let i = 0;i<100;i++) { 
+function addTilesOnClick (boardSize) { 
+    for(let i = 0;i<(boardSize*boardSize);i++) { 
         document.getElementById('tile'+i).addEventListener("click", () => {detonation(i);});
         document.getElementById('tile'+i).addEventListener("contextmenu", () => {toggleFlag(i);});
         document.getElementById('tile'+i).addEventListener('contextmenu', event => event.preventDefault());
     }
 }
-function drawBoard () {
-    remainingToDetonate = 10 * 10 - 10;
-    nrOfBomb = 10;
+function drawBoard (boardSize) {
+    console.log("function triggered");
+    remainingToDetonate =  boardSize * boardSize - nrOfBomb;
     isAnyBombDetonated = false;
     flaggedTiles = 0;
     finished = false;
     firstDetonated = false; 
-
-    for (let i = 0; i<=99;i++) {
-        tiles.pop();
+    
+    let nrOfTiles = tiles.length;
+    for (let i = 0; i<nrOfTiles;i++) {
+        tiles.pop();      
     }
-
-    createTiles();
-    drawBombs();
+    console.log(tiles);
+    createTiles(boardSize);
+    drawBombs(boardSize);
 }
 function revealTile (tileID) {
     
@@ -124,9 +122,6 @@ function revealTile (tileID) {
                 tiles[tileID].exposed = true;
                 remainingToDetonate -= 1;
         }
-
-        
-        
 
         if(remainingToDetonate === 0) {
             document.querySelector('#face').style.backgroundImage = 'url("img/smilingFaceWithSunglasses.png")';
@@ -156,7 +151,7 @@ function detonation (tileID) {
                     }    
                 });
             } else {
-                drawBoard();
+                drawBoard(size);
                 detonation(tileID);
             }
 
@@ -166,8 +161,7 @@ function detonation (tileID) {
             tiles[tileID].neighbours.forEach ( el => {
                 detonation(el);
         });
-
-            
+   
         } else {
             revealTile(tileID);
         }
@@ -193,10 +187,7 @@ function toggleFlag(tileID) {
             flaggedTiles -= 1;
         } 
         refreshBombCounter();
-        
-
-    }
-    
+    }  
 }
 function refreshBombCounter () {
     switch (true) {
@@ -227,25 +218,73 @@ function restart() {
         el.style.removeProperty('background-image');
     });
 
-
-
     document.querySelector('#face').style.backgroundImage = 'url("img/slightlySmilingFace.png")';
 
-    drawBoard();
+    drawBoard(size);
     refreshBombCounter();
     
 }
+function changeLevel(currentLevel) {
+    console.log(currentLevel)
+    document.querySelector('#face').style.backgroundImage = 'url("img/slightlySmilingFace.png")';
+    gamePanel = document.querySelector('#gamePanel');
+    switch(currentLevel){
+        case 1: {}
+            size = 20;
+            nrOfBomb = 40;
+            gamePanel.style.setProperty("--gamePanelWidth", "900px");
+            gamePanel.style.setProperty("--gamePanelHeight", "900px");
+            gamePanel.style.setProperty("--tileSize", "45px");
+            gamePanel.style.setProperty("--tileBorder", "4px");
+            showBoard(20);
+            drawBoard(20);
+            addTilesOnClick(20);
+            refreshBombCounter();
+        break;   
+        case 2:
+            size = 30;
+            nrOfBomb = 90;
+            gamePanel.style.setProperty("--gamePanelWidth", "960px");
+            gamePanel.style.setProperty("--gamePanelHeight", "960px");
+            gamePanel.style.setProperty("--tileSize", "32px");
+            gamePanel.style.setProperty("--tileBorder", "3px");
+            showBoard(30);
+            drawBoard(30);
+            addTilesOnClick(30);
+            refreshBombCounter();
+        break;
+        case 3:
+            size = 10;
+            nrOfBomb = 10;
+            gamePanel.style.setProperty("--gamePanelWidth", "500px");
+            gamePanel.style.setProperty("--gamePanelHeight", "500px");
+            gamePanel.style.setProperty("--tileSize", "50px");
+            gamePanel.style.setProperty("--tileBorder", "5px");
+            showBoard(10);
+            drawBoard(10,10);
+            addTilesOnClick(10);
+            refreshBombCounter();
+        break;
+    }
+
+    level += 1;
+    if (level>3) {
+        level = 1;
+    }
+    document.querySelector('#levelButton').innerText = level;
+}
 document.addEventListener("DOMContentLoaded", () => {
    document.querySelector("#face").addEventListener("click", function() {restart();});
+   document.querySelector("#levelButton").addEventListener("click", function() {changeLevel(level);});
 
-    showBoard();
-    drawBoard();
+    showBoard(size);
+    drawBoard(size);
     refreshBombCounter();
-    addTilesOnClick(); 
+    addTilesOnClick(size); 
 })
 
 
-console.log(tiles);
+
 
 div = document.querySelector('.countersBox');
 console.dir(div);
