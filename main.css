@@ -103,7 +103,7 @@ font-family: 'Press Start 2P', cursive;
 .detonatedTile {
     width: var(--tileSize);
     height: var(--tileSize);
-    border: 2px solid #a5a4a4;
+    border: 1px solid #3f3e3e;
     background-color: #959393;
     display: inline-block;
     background: no-repeat center/100%;
