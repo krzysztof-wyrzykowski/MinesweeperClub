@@ -7,6 +7,7 @@ let firstDetonated
 let tiles = []
 let size = 10
 let level = 1
+let boardsHTML = []
 
 class Tile {
     constructor(ID,neighbours) {
@@ -50,7 +51,7 @@ function createTiles(boardSize) {
             default:
                 tiles.push(new Tile(i,[i-boardSize-1,i-boardSize,i-boardSize+1,i-1,i+1,i+boardSize-1,i+boardSize,i+boardSize+1]));
         } 
-    } console.log(tiles);
+    } 
 }
 function drawBombs(boardSize) {
 
@@ -68,16 +69,24 @@ function drawBombs(boardSize) {
     }
 }
 }
-function showBoard (boardSize) {
+function showBoard (levelToShow) {
     gamePanel = document.querySelector('#gamePanel');
-    gamePanel.innerHTML = "";
+    gamePanel.innerHTML = boardsHTML[levelToShow-1]   
+}
+function generateBoard(boardSize) {
+    let boardHTML = "";
     for(let i = 0;i<(boardSize*boardSize);i++) {
-        gamePanel.innerHTML += '<div class="tile" id="tile'+i+'"></div>' ;
-
+            boardHTML += '<div class="tile" id="tile'+i+'"></div>';
         if((i+1)%boardSize===0) {
-            gamePanel.innerHTML += '<br>' ;   
+            boardHTML += '<br>' ;   
         } 
-    }    
+    }
+    return boardHTML;
+}
+function generateStandardBoards() {
+    boardsHTML.push(generateBoard(10));
+    boardsHTML.push(generateBoard(20));
+    boardsHTML.push(generateBoard(30));
 }
 function addTilesOnClick (boardSize) { 
     for(let i = 0;i<(boardSize*boardSize);i++) { 
@@ -87,7 +96,6 @@ function addTilesOnClick (boardSize) {
     }
 }
 function drawBoard (boardSize) {
-    console.log("function triggered");
     remainingToDetonate =  boardSize * boardSize - nrOfBomb;
     isAnyBombDetonated = false;
     flaggedTiles = 0;
@@ -98,7 +106,6 @@ function drawBoard (boardSize) {
     for (let i = 0; i<nrOfTiles;i++) {
         tiles.pop();      
     }
-    console.log(tiles);
     createTiles(boardSize);
     drawBombs(boardSize);
 }
@@ -225,7 +232,6 @@ function restart() {
     
 }
 function changeLevel(currentLevel) {
-    console.log(currentLevel)
     document.querySelector('#face').style.backgroundImage = 'url("img/slightlySmilingFace.png")';
     gamePanel = document.querySelector('#gamePanel');
     switch(currentLevel){
@@ -236,7 +242,7 @@ function changeLevel(currentLevel) {
             gamePanel.style.setProperty("--gamePanelHeight", "900px");
             gamePanel.style.setProperty("--tileSize", "45px");
             gamePanel.style.setProperty("--tileBorder", "4px");
-            showBoard(20);
+            showBoard(2);
             drawBoard(20);
             addTilesOnClick(20);
             refreshBombCounter();
@@ -248,7 +254,7 @@ function changeLevel(currentLevel) {
             gamePanel.style.setProperty("--gamePanelHeight", "960px");
             gamePanel.style.setProperty("--tileSize", "32px");
             gamePanel.style.setProperty("--tileBorder", "3px");
-            showBoard(30);
+            showBoard(3);
             drawBoard(30);
             addTilesOnClick(30);
             refreshBombCounter();
@@ -260,7 +266,7 @@ function changeLevel(currentLevel) {
             gamePanel.style.setProperty("--gamePanelHeight", "500px");
             gamePanel.style.setProperty("--tileSize", "50px");
             gamePanel.style.setProperty("--tileBorder", "5px");
-            showBoard(10);
+            showBoard(1);
             drawBoard(10,10);
             addTilesOnClick(10);
             refreshBombCounter();
@@ -277,15 +283,10 @@ document.addEventListener("DOMContentLoaded", () => {
    document.querySelector("#face").addEventListener("click", function() {restart();});
    document.querySelector("#levelButton").addEventListener("click", function() {changeLevel(level);});
 
-    showBoard(size);
+    generateStandardBoards();
+    showBoard(level);
     drawBoard(size);
     refreshBombCounter();
     addTilesOnClick(size); 
 })
-
-
-
-
-div = document.querySelector('.countersBox');
-console.dir(div);
 
