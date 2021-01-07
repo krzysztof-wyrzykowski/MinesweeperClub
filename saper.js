@@ -279,6 +279,25 @@ function changeLevel(currentLevel) {
     }
     document.querySelector('#levelButton').innerText = level;
 }
+function addGameReport (win,level,detonated,flagged,correctlyFlagged) {
+    const reports = document.querySelector('#reports');
+    const newReport = document.createElement("div");
+    newReport.classList.add("gameReport");
+    if(win === true){
+        newReport.style.setProperty("--reportColor","#025020");
+    } else {
+        newReport.style.setProperty("--reportColor","#700505");
+    }
+    newReport.innerHTML = generateGameRaport(win,level,detonated,flagged,correctlyFlagged)
+    reports.appendChild(newReport);
+    
+}
+function generateGameRaport (win,level,detonated,flagged,correctlyFlagged) {
+    if(win === true) {
+        return `<div class="gameReportHeader">WIN</div></br>Level: ${level}<br>Time: 0:00`
+    }
+    return `<div class="gameReportHeader">LOSE</div></br>Level: ${level} <br>Detonated tiles: ${detonated} <br>Correctly flagged: ${correctlyFlagged} <br>Incorrectly flagged: ${flagged-correctlyFlagged} <br>Time: 0:00`
+}
 document.addEventListener("DOMContentLoaded", () => {
    document.querySelector("#face").addEventListener("click", function() {restart();});
    document.querySelector("#levelButton").addEventListener("click", function() {changeLevel(level);});
@@ -289,4 +308,5 @@ document.addEventListener("DOMContentLoaded", () => {
     refreshBombCounter();
     addTilesOnClick(size); 
 })
-
+addGameReport(true,1);
+addGameReport(false,3,65,10,9);
