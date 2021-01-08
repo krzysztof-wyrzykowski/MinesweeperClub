@@ -142,7 +142,12 @@ border: 10px solid #959393;
     padding: 10px;
     color: #747474;
     text-align: center;
-    line-height: 230px;
+    justify-items: left;
+    height: 230px;
+    line-height: 200px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
 }
 .gameReport {
     --reportColor: #025020;
@@ -155,7 +160,8 @@ border: 10px solid #959393;
     line-height: 2;
     font-size: 12px;
     text-align: left;
-    float: left;
+    /* float: left; */
+    display: inline-block;
     margin: 0 10px;
 }
 .gameReportHeader {

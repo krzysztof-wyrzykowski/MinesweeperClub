@@ -296,12 +296,13 @@ function addGameReport (win,level,detonated,flagged,correctlyFlagged) {
     newReport.innerHTML = generateGameRaport(win,level,detonated,flagged,correctlyFlagged)
     if(reports.firstChild.nodeType === 3) {
         reports.firstChild.remove();
+        reports.style.textAlign = "left";
     }
     reports.appendChild(newReport);
 }
 function generateGameRaport (win,level,detonated,flagged,incorrectlyFlagged) {
     if(win === true) {
-        return `<div class="gameReportHeader">WIN</div></br>Level: ${level}<br>Time: 0:00`
+        return `<div class="gameReportHeader">WIN</div></br>Level: ${level}<br>Time: 0:00<br> <br> <br> <br>`
     }
     return `<div class="gameReportHeader">LOSE</div></br>Level: ${level} <br>Tiles left: ${detonated} <br>Correctly flagged: ${flagged - incorrectlyFlagged} <br>Incorrectly flagged: ${incorrectlyFlagged} <br>Time: 0:00`
 }
@@ -315,3 +316,7 @@ document.addEventListener("DOMContentLoaded", () => {
     refreshBombCounter();
     addTilesOnClick(size); 
 })
+// addGameReport(true,2)
+// addGameReport(false,2,4,4,4)
+// addGameReport(true,2)
+// addGameReport(true,2)
