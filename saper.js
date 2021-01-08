@@ -129,11 +129,12 @@ function revealTile (tileID) {
                 tiles[tileID].exposed = true;
                 remainingToDetonate -= 1;
         }
-
+        //win
         if(remainingToDetonate === 0) {
             document.querySelector('#face').style.backgroundImage = 'url("img/smilingFaceWithSunglasses.png")';
             document.querySelector('#bombCounter').innerHTML = '000';
             finished = true;
+            addGameReport(true,level);
         }
     }  
 }
@@ -143,20 +144,24 @@ function detonation (tileID) {
         if (tiles[tileID].isBomb === true) {
 
             if (firstDetonated === true) {
+                //lose
                 revealTile(tileID);
                 isAnyBombDetonated = true; 
 
                 document.querySelector('#face').style.backgroundImage = 'url("img/explodingHead.png")';
+                
+                let incorrectlyFlagged = 0;
 
                 tiles.forEach( (el,i) => {
                     if(el.isBomb === true) {
-                        revealTile(i);
-                        
+                        revealTile(i);    
                     } else if (el.flagged === true) {
                         document.getElementById('tile'+i).style.backgroundImage = 'url("img/crossedFlag.png")';
                         document.getElementById('tile'+i).classList.remove('tile');
+                        incorrectlyFlagged++;
                     }    
                 });
+                addGameReport(false,level,remainingToDetonate,flaggedTiles,incorrectlyFlagged)
             } else {
                 drawBoard(size);
                 detonation(tileID);
@@ -167,7 +172,7 @@ function detonation (tileID) {
 
             tiles[tileID].neighbours.forEach ( el => {
                 detonation(el);
-        });
+            });
    
         } else {
             revealTile(tileID);
@@ -289,14 +294,16 @@ function addGameReport (win,level,detonated,flagged,correctlyFlagged) {
         newReport.style.setProperty("--reportColor","#700505");
     }
     newReport.innerHTML = generateGameRaport(win,level,detonated,flagged,correctlyFlagged)
+    if(reports.firstChild.nodeType === 3) {
+        reports.firstChild.remove();
+    }
     reports.appendChild(newReport);
-    
 }
-function generateGameRaport (win,level,detonated,flagged,correctlyFlagged) {
+function generateGameRaport (win,level,detonated,flagged,incorrectlyFlagged) {
     if(win === true) {
         return `<div class="gameReportHeader">WIN</div></br>Level: ${level}<br>Time: 0:00`
     }
-    return `<div class="gameReportHeader">LOSE</div></br>Level: ${level} <br>Detonated tiles: ${detonated} <br>Correctly flagged: ${correctlyFlagged} <br>Incorrectly flagged: ${flagged-correctlyFlagged} <br>Time: 0:00`
+    return `<div class="gameReportHeader">LOSE</div></br>Level: ${level} <br>Tiles left: ${detonated} <br>Correctly flagged: ${flagged - incorrectlyFlagged} <br>Incorrectly flagged: ${incorrectlyFlagged} <br>Time: 0:00`
 }
 document.addEventListener("DOMContentLoaded", () => {
    document.querySelector("#face").addEventListener("click", function() {restart();});
@@ -308,5 +315,3 @@ document.addEventListener("DOMContentLoaded", () => {
     refreshBombCounter();
     addTilesOnClick(size); 
 })
-addGameReport(true,1);
-addGameReport(false,3,65,10,9);
