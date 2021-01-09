@@ -8,6 +8,7 @@ let tiles = []
 let size = 10
 let level = 1
 let boardsHTML = []
+let nrOfGameReports = 0;
 
 class Tile {
     constructor(ID,neighbours) {
@@ -299,8 +300,10 @@ function addGameReport (win,level,detonated,flagged,correctlyFlagged) {
         reports.style.textAlign = "left";
     }
     reports.appendChild(newReport);
+    nrOfGameReports ++;
+    let divScrollTo = nrOfGameReports * 320; 
     reports.scrollTo({
-        left : 1000,
+        left : divScrollTo ,
         behavior: 'smooth'
       });
 }
