@@ -299,8 +299,16 @@ function addGameReport (win,level,detonated,flagged,correctlyFlagged) {
         reports.firstChild.remove();
         reports.style.textAlign = "left";
     }
+
     reports.appendChild(newReport);
+
     nrOfGameReports ++;
+
+    if (nrOfGameReports === 4) {
+        reports.style.overflowX = "scroll";
+        reports.style.overflowY = "hidden";
+    }
+
     let divScrollTo = nrOfGameReports * 320; 
     reports.scrollTo({
         left : divScrollTo ,
@@ -323,7 +331,3 @@ document.addEventListener("DOMContentLoaded", () => {
     refreshBombCounter();
     addTilesOnClick(size); 
 })
-// addGameReport(true,2)
-// addGameReport(false,2,4,4,4)
-// addGameReport(true,2)
-// addGameReport(true,2)

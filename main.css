@@ -145,8 +145,6 @@ border: 10px solid #959393;
     justify-items: left;
     height: 230px;
     line-height: 200px;
-    overflow-x: scroll;
-    overflow-y: hidden;
     white-space: nowrap;
 }
 #reports::-webkit-scrollbar {
@@ -173,7 +171,6 @@ border: 10px solid #959393;
     line-height: 2;
     font-size: 12px;
     text-align: left;
-    /* float: left; */
     display: inline-block;
     margin: 0 10px;
 }
