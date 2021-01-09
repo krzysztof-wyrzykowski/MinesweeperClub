@@ -299,6 +299,10 @@ function addGameReport (win,level,detonated,flagged,correctlyFlagged) {
         reports.style.textAlign = "left";
     }
     reports.appendChild(newReport);
+    reports.scrollTo({
+        left : 1000,
+        behavior: 'smooth'
+      });
 }
 function generateGameRaport (win,level,detonated,flagged,incorrectlyFlagged) {
     if(win === true) {
