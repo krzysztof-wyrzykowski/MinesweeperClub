@@ -321,19 +321,62 @@ function addGameReport (win,level,detonated,flagged,incorrectlyFlagged) {
         reports.style.overflowY = "hidden";
     }
 
-    let divScrollTo = nrOfGameReports * 320; 
+    let divScrollTo = nrOfGameReports * 20000; 
     reports.scrollTo({
-        left : divScrollTo ,
+        left : reports.scrollWidth ,
         behavior: 'smooth'
-      });
+    });
+}
+function scrollReportsToLeft() {
+    if(reports.scrollLeft%300 === 0) {
+        reports.scrollTo({
+            left : reports.scrollLeft - 300 ,
+            behavior: 'smooth'
+        }); 
+   } else {
+        reports.scrollTo({
+            left : reports.scrollLeft - (reports.scrollLeft%300) ,
+            behavior: 'smooth'
+        });
+   }
+}
+function scrollReportsToRight() {
+    if(reports.scrollLeft%300 === 0) {
+        reports.scrollTo({
+            left : reports.scrollLeft + 300 ,
+            behavior: 'smooth'
+        }); 
+   } else {
+        reports.scrollTo({
+            left : reports.scrollLeft + 300 -(reports.scrollLeft%300) ,
+            behavior: 'smooth'
+        });
+   }
 }
 document.addEventListener("DOMContentLoaded", () => {
-   document.querySelector("#face").addEventListener("click", function() {restart();});
-   document.querySelector("#levelButton").addEventListener("click", function() {changeLevel(level);});
+    document.querySelector("#face").addEventListener("click", function() {restart();});
+    document.querySelector("#levelButton").addEventListener("click", function() {changeLevel(level);});
+    document.querySelector("#previousReport").addEventListener("click", function() {scrollReportsToLeft()});
+    document.querySelector("#followingReport").addEventListener("click", function() {scrollReportsToRight()});
+
+    document.querySelector("#test-scroll2").addEventListener("click", function() {
+        console.dir(reports.scrollLeft) 
+    });
 
     generateStandardBoards();
     showBoard(level);
     drawBoard(size);
     refreshBombCounter();
     addTilesOnClick(size); 
+    addGameReport(true)
+    addGameReport(true)
+    addGameReport(true)
+    addGameReport(true)
+    addGameReport(true)
+    addGameReport(true)
+    addGameReport(true)
+    addGameReport(true)
+    addGameReport(true)
+    addGameReport(true)
+    addGameReport(true)
 })
