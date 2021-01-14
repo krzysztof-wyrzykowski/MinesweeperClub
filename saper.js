@@ -285,16 +285,28 @@ function changeLevel(currentLevel) {
     }
     document.querySelector('#levelButton').innerText = level;
 }
-function addGameReport (win,level,detonated,flagged,correctlyFlagged) {
+function addGameReport (win,level,detonated,flagged,incorrectlyFlagged) {
     const reports = document.querySelector('#reports');
     const newReport = document.createElement("div");
     newReport.classList.add("gameReport");
     if(win === true){
+        const reportTemplate = document.querySelector('#reportWinTemplate').content.cloneNode(true);
+        const reportInfos = reportTemplate.querySelectorAll('span');
+        reportInfos[0].innerText = `Level: ${level}`;
+        reportInfos[1].innerText = `Time: 0:00`;
+        newReport.append(reportTemplate);
         newReport.style.setProperty("--reportColor","#025020");
     } else {
+        const reportTemplate = document.querySelector('#reportLoseTemplate').content.cloneNode(true);
+        const reportInfos = reportTemplate.querySelectorAll('span');
+        reportInfos[0].innerText = `Level: ${level}`;
+        reportInfos[1].innerText = `Tiles left: ${detonated}`;
+        reportInfos[2].innerText = `Correctly flagged: ${flagged - incorrectlyFlagged}`;
+        reportInfos[3].innerText = `Incorrectly flagged: ${incorrectlyFlagged}`;
+        reportInfos[4].innerText = `Time: 0:00`;
+        newReport.append(reportTemplate);
         newReport.style.setProperty("--reportColor","#700505");
     }
-    newReport.innerHTML = generateGameRaport(win,level,detonated,flagged,correctlyFlagged)
     if(reports.firstChild.nodeType === 3) {
         reports.firstChild.remove();
         reports.style.textAlign = "left";
@@ -314,12 +326,6 @@ function addGameReport (win,level,detonated,flagged,correctlyFlagged) {
         left : divScrollTo ,
         behavior: 'smooth'
       });
-}
-function generateGameRaport (win,level,detonated,flagged,incorrectlyFlagged) {
-    if(win === true) {
-        return `<div class="gameReportHeader">WIN</div></br>Level: ${level}<br>Time: 0:00<br> <br> <br> <br>`
-    }
-    return `<div class="gameReportHeader">LOSE</div></br>Level: ${level} <br>Tiles left: ${detonated} <br>Correctly flagged: ${flagged - incorrectlyFlagged} <br>Incorrectly flagged: ${incorrectlyFlagged} <br>Time: 0:00`
 }
 document.addEventListener("DOMContentLoaded", () => {
    document.querySelector("#face").addEventListener("click", function() {restart();});
