@@ -138,7 +138,7 @@ border: 10px solid #959393;
     height: 50px;
     border-bottom: 10px solid #959393;
 }
-#reports, .scrollReports{
+#reports, .scrollReportsArrow{
     float: left;
 }
 #followingReport{
@@ -149,10 +149,11 @@ border: 10px solid #959393;
     background-image: url("img/leftArrow.png");
     background-size: cover; 
 }
-.scrollReports {
+.scrollReportsArrow {
     width: 50px;
     height: 230px;
-    background-color: violet;
+    visibility: hidden;
+    cursor: pointer;
 }
 #reports {
     padding: 10px 5px;

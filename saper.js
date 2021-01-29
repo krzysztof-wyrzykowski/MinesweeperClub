@@ -317,11 +317,12 @@ function addGameReport (win,level,detonated,flagged,incorrectlyFlagged) {
     nrOfGameReports ++;
 
     if (nrOfGameReports === 4) {
+        document.querySelector("#followingReport").style.visibility = "visible";
+        document.querySelector("#previousReport").style.visibility = "visible";
         reports.style.overflowX = "scroll";
         reports.style.overflowY = "hidden";
     }
-
-    let divScrollTo = nrOfGameReports * 20000; 
+    
     reports.scrollTo({
         left : reports.scrollWidth ,
         behavior: 'smooth'
@@ -359,24 +360,9 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("#previousReport").addEventListener("click", function() {scrollReportsToLeft()});
     document.querySelector("#followingReport").addEventListener("click", function() {scrollReportsToRight()});
 
-    document.querySelector("#test-scroll2").addEventListener("click", function() {
-        console.dir(reports.scrollLeft) 
-    });
-
     generateStandardBoards();
     showBoard(level);
     drawBoard(size);
     refreshBombCounter();
     addTilesOnClick(size); 
-    addGameReport(true)
-    addGameReport(true)
-    addGameReport(true)
-    addGameReport(true)
-    addGameReport(true)
-    addGameReport(true)
-    addGameReport(true)
-    addGameReport(true)
-    addGameReport(true)
-    addGameReport(true)
-    addGameReport(true)
 })
