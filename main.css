@@ -90,35 +90,31 @@ font-family: 'Press Start 2P', cursive;
     border: 1px solid #7c7a7a;
 }
 .flaggedTile {
-    width: var(--tileSize);
-    height: var(--tileSize);
-    border-top: 5px outset #bebebe;
-    border-left: 5px outset #bebebe;
-    border-right: 5px outset #d1d1d1;
-    border-bottom: 5px outset #d1d1d1;
-    display: inline-block;
-    background-image: url('img/flag.png');
-    background-size: cover;
-}
-.detonatedTile {
-    width: var(--tileSize);
-    height: var(--tileSize);
-    border: 1px solid #3f3e3e;
-    background-color: #959393;
-    display: inline-block;
-    background: no-repeat center/100%;
-}
-.tile {
-    width: var(--tileSize);
-    height: var(--tileSize);
     border-top: var(--tileBorder) outset #bebebe;
     border-left: var(--tileBorder) outset #bebebe;
     border-right: var(--tileBorder) outset #d1d1d1;
     border-bottom: var(--tileBorder) outset #d1d1d1;
+    background-image: url('img/flag.png');
+    background-size: cover;
+}
+.detonatedTile {
+    border: 1px solid #3f3e3e;
+    background-color: #959393;
+    background: no-repeat center/100%;
+}
+.coveredTile {
+    border-top: var(--tileBorder) outset #bebebe;
+    border-left: var(--tileBorder) outset #bebebe;
+    border-right: var(--tileBorder) outset #d1d1d1;
+    border-bottom: var(--tileBorder) outset #d1d1d1;
+}
+.tile {
+    width: var(--tileSize);
+    height: var(--tileSize);
     display: inline-block;
     background-color: #959393;
 }
-.tile:hover {
+.coveredTile:hover {
     /* background-color:#555; */
     opacity: .6;
 }
