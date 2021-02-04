@@ -237,7 +237,18 @@ function changeLevel(currentLevel) {
     document.querySelector('#face').style.backgroundImage = 'url("img/slightlySmilingFace.png")';
 
     switch(currentLevel){
-        case 1: {}
+        case 1: 
+            size = 10;
+            nrOfBomb = 10;
+            gamePanel.style.setProperty("--gamePanelWidth", "500px");
+            gamePanel.style.setProperty("--gamePanelHeight", "500px");
+            gamePanel.style.setProperty("--tileSize", "50px");
+            gamePanel.style.setProperty("--tileBorder", "5px");
+            showBoard(1);
+            drawBoard(10,10);
+            
+        break;   
+        case 2:
             size = 20;
             nrOfBomb = 40;
             gamePanel.style.setProperty("--gamePanelWidth", "900px");
@@ -246,8 +257,9 @@ function changeLevel(currentLevel) {
             gamePanel.style.setProperty("--tileBorder", "4px");
             showBoard(2);
             drawBoard(20);
-        break;   
-        case 2:
+            
+        break;
+        case 3:
             size = 30;
             nrOfBomb = 90;
             gamePanel.style.setProperty("--gamePanelWidth", "960px");
@@ -255,26 +267,13 @@ function changeLevel(currentLevel) {
             gamePanel.style.setProperty("--tileSize", "32px");
             gamePanel.style.setProperty("--tileBorder", "3px");
             showBoard(3);
-            drawBoard(30);
-        break;
-        case 3:
-            size = 10;
-            nrOfBomb = 10;
-            gamePanel.style.setProperty("--gamePanelWidth", "500px");
-            gamePanel.style.setProperty("--gamePanelHeight", "500px");
-            gamePanel.style.setProperty("--tileSize", "50px");
-            gamePanel.style.setProperty("--tileBorder", "5px");
-            showBoard(1);
-            drawBoard(10,10);          
+            drawBoard(30);        
         break;
     }
 
     refreshBombCounter();
 
-    level += 1;
-    if (level>3) {
-        level = 1;
-    }
+    level = currentLevel;
     document.querySelector('#levelButton').innerText = level;
 }
 function addGameReport (win,level,detonated,flagged,incorrectlyFlagged) {
@@ -348,7 +347,14 @@ function scrollReportsToRight() {
 }
 document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("#face").addEventListener("click", function() {restart();});
-    document.querySelector("#levelButton").addEventListener("click", function() {changeLevel(level);});
+    document.querySelector("#levelButton").addEventListener("click", function() {
+        if(level >= 3){
+            changeLevel(1) 
+        } else {
+            changeLevel(level+1)
+        }
+        
+    ;});
     document.querySelector("#previousReport").addEventListener("click", function() {scrollReportsToLeft()});
     document.querySelector("#followingReport").addEventListener("click", function() {scrollReportsToRight()});
 
@@ -363,6 +369,32 @@ document.addEventListener("DOMContentLoaded", () => {
         toggleFlag(Number(event.target.dataset.tileid))
     });
 
+    //shortcuts
+    document.addEventListener("keyup", event => {
+        console.log(event.key)
+        if(event.key === "1" && level !== 1) {
+            changeLevel(1);
+        }
+        if(event.key === "2" && level !== 2) {
+            changeLevel(2);
+        }
+        if(event.key === "3" && level !== 3) {
+            changeLevel(3);
+        }
+        if(event.key.toUpperCase() === "R" ) {
+            restart();
+        }
+        if(event.key === "ArrowRight" ) {
+            scrollReportsToRight();
+        }
+        if(event.key === "ArrowLeft" ) {
+            scrollReportsToLeft();
+        }
+    });
+    // addGameReport(true);
+    // addGameReport(true);
+    // addGameReport(true);
+    // addGameReport(true);
     generateStandardBoards();
     showBoard(level);
     drawBoard(size);
