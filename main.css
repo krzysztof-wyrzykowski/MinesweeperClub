@@ -1,12 +1,27 @@
 * {
     box-sizing: border-box;
+    -webkit-touch-callout: none;
+    /* iOS Safari */
+    -webkit-user-select: none;
+    /* Safari */
+    -khtml-user-select: none;
+    /* Konqueror HTML */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
+    user-select: none;
+    /* Non-prefixed version, currently
+                                  supported by Chrome and Opera*/
 }
+
 body {
-margin: 0;
-padding: 0;
-background-color: #417241;
-font-family: 'Press Start 2P', cursive;
+    margin: 0;
+    padding: 0;
+    background-color: #417241;
+    font-family: 'Press Start 2P', cursive;
 }
+
 .header {
     box-sizing: content-box;
     text-align: center;
@@ -15,20 +30,24 @@ font-family: 'Press Start 2P', cursive;
     padding-bottom: 20px;
     background-color: #284e28;
     border-bottom: 10px solid #203820;
+    letter-spacing: 5px;
 }
+
 .container {
     margin-top: 20px;
     margin-left: auto;
     margin-right: auto;
     width: 1020px;
-    background-color:#c0c0c0;
+    background-color: #c0c0c0;
     min-height: 580px;
     border: 10px solid #959393;
 }
+
 .countersBox {
     border-bottom: 10px solid #959393;
     text-align: center;
 }
+
 .counter {
     height: 50px;
     border-top: 4px outset #9d9d9d;
@@ -42,46 +61,46 @@ font-family: 'Press Start 2P', cursive;
     line-height: 40px;
     top: 10px;
 }
+
 #face {
-    width: 50px; 
+    width: 50px;
     color: transparent;
     white-space: nowrap;
-    background-size: cover; 
-    background-image: url('img/slightlySmilingFace.png'); 
+    background-size: cover;
+    background-image: url('img/slightlySmilingFace.png');
 }
+
 #levelButton {
     width: 50px;
     background-color: #959393;
 }
-.counterBox, .counter, #gamePanel, #tile, #detonatedTile, #flaggedTile, .gameReport {
-    -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-    -khtml-user-select: none; /* Konqueror HTML */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* Internet Explorer/Edge */
-    user-select: none; /* Non-prefixed version, currently
-                                  supported by Chrome and Opera*/
-}
-#face:hover, #levelButton:hover {
+
+#face,
+#levelButton,
+.showShortcuts {
     cursor: pointer;
 }
+
 #timer {
     min-width: 200px;
-    
+
 }
-.bombCounter{
+
+.bombCounter {
     min-width: 80px;
 }
+
 .board {
     text-align: center;
     padding: 40px 0;
-    
+
 }
+
 #gamePanel {
-    --gamePanelWidth : 500px;
-    --gamePanelHeight : 500px;
-    --tileSize : 50px;
-    --tileBorder : 5px;
+    --gamePanelWidth: 500px;
+    --gamePanelHeight: 500px;
+    --tileSize: 50px;
+    --tileBorder: 5px;
     box-sizing: content-box;
     margin-left: auto;
     margin-right: auto;
@@ -89,6 +108,7 @@ font-family: 'Press Start 2P', cursive;
     height: var(--gamePanelHeight);
     border: 1px solid #7c7a7a;
 }
+
 .flaggedTile {
     border-top: var(--tileBorder) outset #bebebe;
     border-left: var(--tileBorder) outset #bebebe;
@@ -97,36 +117,42 @@ font-family: 'Press Start 2P', cursive;
     background-image: url('img/flag.png');
     background-size: cover;
 }
+
 .detonatedTile {
     border: 1px solid #3f3e3e;
     background-color: #959393;
     background: no-repeat center/100%;
 }
+
 .coveredTile {
     border-top: var(--tileBorder) outset #bebebe;
     border-left: var(--tileBorder) outset #bebebe;
     border-right: var(--tileBorder) outset #d1d1d1;
     border-bottom: var(--tileBorder) outset #d1d1d1;
 }
+
 .tile {
     width: var(--tileSize);
     height: var(--tileSize);
     display: inline-block;
     background-color: #959393;
 }
+
 .coveredTile:hover {
     /* background-color:#555; */
     opacity: .6;
 }
+
 #reportsBox {
-margin-top: 20px;
-margin-left: auto;
-margin-right: auto;
-width: 1020px;
-background-color:#c0c0c0;
-height: 300px;
-border: 10px solid #959393;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 1020px;
+    background-color: #c0c0c0;
+    height: 300px;
+    border: 10px solid #959393;
 }
+
 #reportsHeader {
     line-height: 40px;
     font-size: 24px;
@@ -134,23 +160,29 @@ border: 10px solid #959393;
     height: 50px;
     border-bottom: 10px solid #959393;
 }
-#reports, .scrollReportsArrow{
+
+#reports,
+.scrollReportsArrow {
     float: left;
 }
-#followingReport{
+
+#followingReport {
     background-image: url("img/rightArrow.png");
-    background-size: cover; 
+    background-size: cover;
 }
-#previousReport{
+
+#previousReport {
     background-image: url("img/leftArrow.png");
-    background-size: cover; 
+    background-size: cover;
 }
+
 .scrollReportsArrow {
     width: 50px;
     height: 230px;
     visibility: hidden;
     cursor: pointer;
 }
+
 #reports {
     padding: 10px 5px;
     color: #747474;
@@ -161,19 +193,21 @@ border: 10px solid #959393;
     white-space: nowrap;
     width: 900px;
 }
+
 #reports::-webkit-scrollbar {
     height: 20px;
 }
 
 #reports::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 5px grey; 
-    border-radius: 10px;
-}  
-
-#reports::-webkit-scrollbar-thumb {
-    background: #666666; 
+    box-shadow: inset 0 0 5px grey;
     border-radius: 10px;
 }
+
+#reports::-webkit-scrollbar-thumb {
+    background: #666666;
+    border-radius: 10px;
+}
+
 .gameReport {
     --reportColor: #025020;
     height: 190px;
@@ -186,12 +220,77 @@ border: 10px solid #959393;
     font-size: 11.5px;
     text-align: left;
     display: inline-block;
-    margin-left : 10px;
+    margin-left: 10px;
 }
+
 .gameReport:first-child {
-    margin-left : 0;
+    margin-left: 0;
 }
+
 .gameReportHeader {
     text-align: center;
     font-size: 16px;
+}
+
+.showShortcuts {
+    position: fixed;
+    border: 10px outset #959393;
+    left: 30px;
+    top: 17px;
+    width: 100px;
+    height: 80px;
+    padding:  0 10px 5px 10px;
+    background-image: url("img/keyboard.png");
+    background-size: cover;
+    background-color: #c0c0c0;
+    background-origin: content-box;
+    background-repeat: no-repeat;
+}
+.shortcutsList {
+	 position: relative; 
+    left: -20px;
+    top: 97px;
+    min-height: 500px;
+    width: 400px;
+    background: #007394;
+    border-radius: 10px;
+    border: 5px solid #ddd;
+    color: #ddd;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.shortcutsList:after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 45px;
+	width: 0;
+	height: 0;
+	border: 20px solid transparent;
+	border-bottom-color: #ddd;
+	border-top: 0;
+	margin-left: -20px;
+	margin-top: -20px;
+}.shortcut{
+    margin: 20px;
+    height: 80px;
+}
+.shortcutBtn{
+    width: 80px;
+    height: 80px;
+    border-radius: 5px;
+    border: 5px solid #ddd;
+    font-size: 40px;
+    line-height: 70px;
+    text-align: center;
+    float: left;
+}
+.shortcutDescription{
+    margin-left: 10px;
+    width: 260px;
+    font-size: 12px;
+    line-height: 80px;
+    text-align: center;
+    float: left;
 }

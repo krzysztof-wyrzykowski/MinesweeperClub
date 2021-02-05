@@ -12,6 +12,8 @@ let nrOfGameReports = 0;
 
 const gamePanel = document.querySelector('#gamePanel');
 const tilesDivs = gamePanel.getElementsByClassName('tile');
+const showShortcutsBtn = document.querySelector('.showShortcuts');
+const shortcutsList = document.querySelector('.shortcutsList');
 
 class Tile {
     constructor(ID,neighbours) {
@@ -327,7 +329,7 @@ function scrollReportsToLeft() {
         }); 
    } else {
         reports.scrollTo({
-            left : reports.scrollLeft - (reports.scrollLeft%300) ,
+            left : reports.scrollLeft - reports.scrollLeft%300,
             behavior: 'smooth'
         });
    }
@@ -340,9 +342,10 @@ function scrollReportsToRight() {
         }); 
    } else {
         reports.scrollTo({
-            left : reports.scrollLeft + 300 -(reports.scrollLeft%300) ,
+            left : reports.scrollLeft + 300 - reports.scrollLeft%300 ,
             behavior: 'smooth'
         });
+        console.log(reports.scrollLeft + 300 -reports.scrollLeft%300)
    }
 }
 document.addEventListener("DOMContentLoaded", () => {
@@ -370,8 +373,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     //shortcuts
-    document.addEventListener("keyup", event => {
-        console.log(event.key)
+    document.addEventListener("keydown", event => {
         if(event.key === "1" && level !== 1) {
             changeLevel(1);
         }
@@ -384,17 +386,24 @@ document.addEventListener("DOMContentLoaded", () => {
         if(event.key.toUpperCase() === "R" ) {
             restart();
         }
-        if(event.key === "ArrowRight" ) {
+        if(event.key === "ArrowRight") {
+            event.preventDefault();
             scrollReportsToRight();
         }
-        if(event.key === "ArrowLeft" ) {
+        if(event.key === "ArrowLeft") {  
+            event.preventDefault();
             scrollReportsToLeft();
         }
     });
-    // addGameReport(true);
-    // addGameReport(true);
-    // addGameReport(true);
-    // addGameReport(true);
+
+    showShortcutsBtn.addEventListener("click", event => {
+           if(getComputedStyle(shortcutsList).visibility === "hidden"){
+            shortcutsList.style.visibility = "visible";
+            } else {
+                shortcutsList.style.visibility = "hidden";
+            } 
+    })
+    
     generateStandardBoards();
     showBoard(level);
     drawBoard(size);
