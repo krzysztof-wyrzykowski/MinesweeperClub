@@ -9,6 +9,7 @@ let size = 10
 let level = 1
 let boardsHTML = []
 let nrOfGameReports = 0;
+let scrollingReportsInProgres = false;
 
 const gamePanel = document.querySelector('#gamePanel');
 const tilesDivs = gamePanel.getElementsByClassName('tile');
@@ -322,32 +323,82 @@ function addGameReport (win,level,detonated,flagged,incorrectlyFlagged) {
     });
 }
 function scrollReportsToLeft() {
-    if(reports.scrollLeft%300 === 0) {
-        reports.scrollTo({
-            left : reports.scrollLeft - 300 ,
-            behavior: 'smooth'
-        }); 
-   } else {
-        reports.scrollTo({
-            left : reports.scrollLeft - reports.scrollLeft%300,
-            behavior: 'smooth'
-        });
-   }
+
+    if(scrollingReportsInProgres){
+        setTimeout(scrollReportsToLeft,10);
+        return 0
+    }
+    
+    let positionToScroll;
+    if(reports.scrollLeft === 0){
+        return 0;
+    } else if(reports.scrollLeft%300 === 0){
+        positionToScroll = reports.scrollLeft - 300;
+    } else {
+        positionToScroll = reports.scrollLeft - reports.scrollLeft%300;
+    }
+
+    function checkScrollingProgress () {
+        if(reports.scrollLeft === positionToScroll) { 
+            reports.removeEventListener('scroll', checkScrollingProgress)
+            console.log("scrolling finished")
+            scrollingReportsInProgres = false;
+        }
+    }
+
+    reports.addEventListener("scroll", checkScrollingProgress)
+    // tutaj było wywołanie funkcji checkScrollingProgress nie wiem dlaczego
+    scrollingReportsInProgres = true;
+    reports.scrollTo({
+        left : positionToScroll ,
+        behavior: 'smooth',
+    }); 
 }
 function scrollReportsToRight() {
-    if(reports.scrollLeft%300 === 0) {
-        reports.scrollTo({
-            left : reports.scrollLeft + 300 ,
-            behavior: 'smooth'
-        }); 
-   } else {
-        reports.scrollTo({
-            left : reports.scrollLeft + 300 - reports.scrollLeft%300 ,
-            behavior: 'smooth'
-        });
-        console.log(reports.scrollLeft + 300 -reports.scrollLeft%300)
-   }
+
+    if(scrollingReportsInProgres){
+        setTimeout(scrollReportsToRight,10);
+        return 0
+    }
+
+    let positionToScroll;
+    if(reports.scrollLeft === reports.scrollWidth-900) {
+        return 0;
+    } else if(reports.scrollLeft%300 === 0) {
+        positionToScroll = reports.scrollLeft + 300;
+    } else {
+        positionToScroll = reports.scrollLeft + 300 - reports.scrollLeft%300;
+    }
+
+    function checkScrollingProgress () {
+        if(reports.scrollLeft === positionToScroll) { 
+            reports.removeEventListener('scroll', checkScrollingProgress)
+            console.log("scrolling finished")
+            scrollingReportsInProgres = false;
+        }
+    }
+
+    reports.addEventListener("scroll", checkScrollingProgress)
+    // tutaj było wywołanie funkcji checkScrollingProgress nie wiem dlaczego
+    scrollingReportsInProgres = true;
+    reports.scrollTo({
+        left : positionToScroll ,
+        behavior: 'smooth',
+    }); 
 }
+//     if(reports.scrollLeft%300 === 0) {
+//         reports.scrollTo({
+//             left : reports.scrollLeft + 300 ,
+//             behavior: 'smooth'
+//         }); 
+//    } else {
+//         reports.scrollTo({
+//             left : reports.scrollLeft + 300 - reports.scrollLeft%300 ,
+//             behavior: 'smooth'
+//         });
+//         console.log(reports.scrollLeft + 300 -reports.scrollLeft%300)
+//    }
+
 document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("#face").addEventListener("click", function() {restart();});
     document.querySelector("#levelButton").addEventListener("click", function() {
@@ -358,8 +409,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         
     ;});
-    document.querySelector("#previousReport").addEventListener("click", function() {scrollReportsToLeft()});
-    document.querySelector("#followingReport").addEventListener("click", function() {scrollReportsToRight()});
+    document.querySelector("#previousReport").addEventListener("click", function() {setTimeout(scrollReportsToLeft,0);});
+    document.querySelector("#followingReport").addEventListener("click", function() {setTimeout(scrollReportsToRight,0);});
 
     gamePanel.addEventListener("click", event => {
         if(event.target.classList.contains("tile")) {
@@ -404,6 +455,16 @@ document.addEventListener("DOMContentLoaded", () => {
             } 
     })
     
+    addGameReport(true,1)
+    addGameReport(false,1,1,1,1)
+    addGameReport(true,1)
+    addGameReport(false,1,1,1,1)
+    addGameReport(true,1)
+    addGameReport(false,1,1,1,1)
+    addGameReport(true,1)
+    addGameReport(false,1,1,1,1)
+    addGameReport(true,1)
+    addGameReport(false,1,1,1,1)
     generateStandardBoards();
     showBoard(level);
     drawBoard(size);
