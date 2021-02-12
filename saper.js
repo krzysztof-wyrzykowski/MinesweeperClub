@@ -10,6 +10,8 @@ let level = 1
 let boardsHTML = []
 let nrOfGameReports = 0;
 let scrollingReportsInProgres = false;
+let scrollingQueue = 0;
+let scrollingDirection;
 
 const gamePanel = document.querySelector('#gamePanel');
 const tilesDivs = gamePanel.getElementsByClassName('tile');
@@ -325,8 +327,13 @@ function addGameReport (win,level,detonated,flagged,incorrectlyFlagged) {
 function scrollReportsToLeft() {
 
     if(scrollingReportsInProgres){
-        setTimeout(scrollReportsToLeft,10);
-        return 0
+        if(scrollingDirection === "left"){
+            scrollingQueue+=1;
+            return 0
+        } else {
+            scrollingQueue = 0;
+            scrollingDirection = "left";
+        }
     }
     
     let positionToScroll;
@@ -340,15 +347,23 @@ function scrollReportsToLeft() {
 
     function checkScrollingProgress () {
         if(reports.scrollLeft === positionToScroll) { 
-            reports.removeEventListener('scroll', checkScrollingProgress)
-            console.log("scrolling finished")
+            reports.removeEventListener('scroll', checkScrollingProgress);
             scrollingReportsInProgres = false;
+            console.log(scrollingQueue)
+            if(positionToScroll === 0){
+                scrollingQueue = 0;
+            } else if(scrollingQueue>0){
+                scrollingQueue-=1;
+                scrollReportsToLeft();
+            }
+            
         }
     }
 
     reports.addEventListener("scroll", checkScrollingProgress)
     // tutaj było wywołanie funkcji checkScrollingProgress nie wiem dlaczego
     scrollingReportsInProgres = true;
+    scrollingDirection = "left";
     reports.scrollTo({
         left : positionToScroll ,
         behavior: 'smooth',
@@ -357,8 +372,13 @@ function scrollReportsToLeft() {
 function scrollReportsToRight() {
 
     if(scrollingReportsInProgres){
-        setTimeout(scrollReportsToRight,10);
-        return 0
+        if(scrollingDirection === "right"){
+            scrollingQueue+=1;
+            return 0
+        } else {
+            scrollingQueue = 0;
+            scrollingDirection = "right";
+        }
     }
 
     let positionToScroll;
@@ -372,32 +392,27 @@ function scrollReportsToRight() {
 
     function checkScrollingProgress () {
         if(reports.scrollLeft === positionToScroll) { 
-            reports.removeEventListener('scroll', checkScrollingProgress)
-            console.log("scrolling finished")
+            reports.removeEventListener('scroll', checkScrollingProgress);
             scrollingReportsInProgres = false;
+            console.log(scrollingQueue)
+            if(positionToScroll === reports.scrollWidth-900){
+                scrollingQueue = 0;
+            } else if(scrollingQueue>0){
+                scrollingQueue-=1;
+                scrollReportsToRight();
+            }
         }
     }
 
     reports.addEventListener("scroll", checkScrollingProgress)
     // tutaj było wywołanie funkcji checkScrollingProgress nie wiem dlaczego
     scrollingReportsInProgres = true;
+    scrollingDirection = "right";
     reports.scrollTo({
         left : positionToScroll ,
         behavior: 'smooth',
     }); 
 }
-//     if(reports.scrollLeft%300 === 0) {
-//         reports.scrollTo({
-//             left : reports.scrollLeft + 300 ,
-//             behavior: 'smooth'
-//         }); 
-//    } else {
-//         reports.scrollTo({
-//             left : reports.scrollLeft + 300 - reports.scrollLeft%300 ,
-//             behavior: 'smooth'
-//         });
-//         console.log(reports.scrollLeft + 300 -reports.scrollLeft%300)
-//    }
 
 document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("#face").addEventListener("click", function() {restart();});
@@ -455,6 +470,16 @@ document.addEventListener("DOMContentLoaded", () => {
             } 
     })
     
+    addGameReport(true,1)
+    addGameReport(false,1,1,1,1)
+    addGameReport(true,1)
+    addGameReport(false,1,1,1,1)
+    addGameReport(true,1)
+    addGameReport(false,1,1,1,1)
+    addGameReport(true,1)
+    addGameReport(false,1,1,1,1)
+    addGameReport(true,1)
+    addGameReport(false,1,1,1,1)
     addGameReport(true,1)
     addGameReport(false,1,1,1,1)
     addGameReport(true,1)
