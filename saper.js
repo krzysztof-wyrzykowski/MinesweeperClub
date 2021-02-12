@@ -12,6 +12,7 @@ let nrOfGameReports = 0;
 let scrollingReportsInProgres = false;
 let scrollingQueue = 0;
 let scrollingDirection;
+let arrowKeyReleased = true;
 
 const gamePanel = document.querySelector('#gamePanel');
 const tilesDivs = gamePanel.getElementsByClassName('tile');
@@ -326,6 +327,10 @@ function addGameReport (win,level,detonated,flagged,incorrectlyFlagged) {
 }
 function scrollReportsToLeft() {
 
+    if(arrowKeyReleased === false && reports.scrollLeft%300 !== 0){
+        return 0;
+    }
+
     if(scrollingReportsInProgres){
         if(scrollingDirection === "left"){
             scrollingQueue+=1;
@@ -349,7 +354,6 @@ function scrollReportsToLeft() {
         if(reports.scrollLeft === positionToScroll) { 
             reports.removeEventListener('scroll', checkScrollingProgress);
             scrollingReportsInProgres = false;
-            console.log(scrollingQueue)
             if(positionToScroll === 0){
                 scrollingQueue = 0;
             } else if(scrollingQueue>0){
@@ -371,6 +375,9 @@ function scrollReportsToLeft() {
 }
 function scrollReportsToRight() {
 
+    if(arrowKeyReleased === false && reports.scrollLeft%300 !== 0){
+        return 0;
+    }
     if(scrollingReportsInProgres){
         if(scrollingDirection === "right"){
             scrollingQueue+=1;
@@ -394,7 +401,6 @@ function scrollReportsToRight() {
         if(reports.scrollLeft === positionToScroll) { 
             reports.removeEventListener('scroll', checkScrollingProgress);
             scrollingReportsInProgres = false;
-            console.log(scrollingQueue)
             if(positionToScroll === reports.scrollWidth-900){
                 scrollingQueue = 0;
             } else if(scrollingQueue>0){
@@ -413,7 +419,9 @@ function scrollReportsToRight() {
         behavior: 'smooth',
     }); 
 }
+function isArrowKeyReleased() {
 
+}
 document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("#face").addEventListener("click", function() {restart();});
     document.querySelector("#levelButton").addEventListener("click", function() {
@@ -439,6 +447,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     //shortcuts
+    document.addEventListener("keyup", event => {
+        if(event.key === "ArrowRight" || event.key === "ArrowLeft"){
+            arrowKeyReleased = true;
+        }
+    })
     document.addEventListener("keydown", event => {
         if(event.key === "1" && level !== 1) {
             changeLevel(1);
@@ -455,10 +468,13 @@ document.addEventListener("DOMContentLoaded", () => {
         if(event.key === "ArrowRight") {
             event.preventDefault();
             scrollReportsToRight();
+            arrowKeyReleased = false;
+            
         }
         if(event.key === "ArrowLeft") {  
             event.preventDefault();
             scrollReportsToLeft();
+            arrowKeyReleased = false;
         }
     });
 
