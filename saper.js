@@ -328,13 +328,13 @@ function addGameReport (win,level,detonated,flagged,incorrectlyFlagged) {
 function scrollReportsToLeft() {
 
     if(arrowKeyReleased === false && reports.scrollLeft%300 !== 0){
-        return 0;
+        return;
     }
 
     if(scrollingReportsInProgres){
         if(scrollingDirection === "left"){
             scrollingQueue+=1;
-            return 0
+            return;
         } else {
             scrollingQueue = 0;
             scrollingDirection = "left";
@@ -343,7 +343,7 @@ function scrollReportsToLeft() {
     
     let positionToScroll;
     if(reports.scrollLeft === 0){
-        return 0;
+        return;
     } else if(reports.scrollLeft%300 === 0){
         positionToScroll = reports.scrollLeft - 300;
     } else {
@@ -376,12 +376,12 @@ function scrollReportsToLeft() {
 function scrollReportsToRight() {
 
     if(arrowKeyReleased === false && reports.scrollLeft%300 !== 0){
-        return 0;
+        return;
     }
     if(scrollingReportsInProgres){
         if(scrollingDirection === "right"){
             scrollingQueue+=1;
-            return 0
+            return;
         } else {
             scrollingQueue = 0;
             scrollingDirection = "right";
@@ -390,7 +390,7 @@ function scrollReportsToRight() {
 
     let positionToScroll;
     if(reports.scrollLeft === reports.scrollWidth-900) {
-        return 0;
+        return;
     } else if(reports.scrollLeft%300 === 0) {
         positionToScroll = reports.scrollLeft + 300;
     } else {
@@ -419,8 +419,12 @@ function scrollReportsToRight() {
         behavior: 'smooth',
     }); 
 }
-function isArrowKeyReleased() {
-
+function toggleShortcutsListVisibility(){
+    if(getComputedStyle(shortcutsList).visibility === "hidden"){
+        shortcutsList.style.visibility = "visible";
+    } else {
+        shortcutsList.style.visibility = "hidden";
+    } 
 }
 document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("#face").addEventListener("click", function() {restart();});
@@ -455,57 +459,39 @@ document.addEventListener("DOMContentLoaded", () => {
     document.addEventListener("keydown", event => {
         if(event.key === "1" && level !== 1) {
             changeLevel(1);
+            return;
         }
         if(event.key === "2" && level !== 2) {
             changeLevel(2);
+            return;
         }
         if(event.key === "3" && level !== 3) {
             changeLevel(3);
+            return;
         }
         if(event.key.toUpperCase() === "R" ) {
             restart();
+            return;
+        }
+        if(event.key.toUpperCase() === "S") {
+            toggleShortcutsListVisibility();
         }
         if(event.key === "ArrowRight") {
             event.preventDefault();
             scrollReportsToRight();
             arrowKeyReleased = false;
-            
+            return;
         }
         if(event.key === "ArrowLeft") {  
             event.preventDefault();
             scrollReportsToLeft();
             arrowKeyReleased = false;
+            return;
         }
     });
 
-    showShortcutsBtn.addEventListener("click", event => {
-           if(getComputedStyle(shortcutsList).visibility === "hidden"){
-            shortcutsList.style.visibility = "visible";
-            } else {
-                shortcutsList.style.visibility = "hidden";
-            } 
-    })
+    showShortcutsBtn.addEventListener("click", toggleShortcutsListVisibility)
     
-    addGameReport(true,1)
-    addGameReport(false,1,1,1,1)
-    addGameReport(true,1)
-    addGameReport(false,1,1,1,1)
-    addGameReport(true,1)
-    addGameReport(false,1,1,1,1)
-    addGameReport(true,1)
-    addGameReport(false,1,1,1,1)
-    addGameReport(true,1)
-    addGameReport(false,1,1,1,1)
-    addGameReport(true,1)
-    addGameReport(false,1,1,1,1)
-    addGameReport(true,1)
-    addGameReport(false,1,1,1,1)
-    addGameReport(true,1)
-    addGameReport(false,1,1,1,1)
-    addGameReport(true,1)
-    addGameReport(false,1,1,1,1)
-    addGameReport(true,1)
-    addGameReport(false,1,1,1,1)
     generateStandardBoards();
     showBoard(level);
     drawBoard(size);
