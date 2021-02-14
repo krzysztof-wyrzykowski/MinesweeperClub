@@ -13,11 +13,41 @@ let scrollingReportsInProgres = false;
 let scrollingQueue = 0;
 let scrollingDirection;
 let arrowKeyReleased = true;
+let gameTimeInterval
 
+const gameTime = {
+    deciseconds: 0, 
+
+    start: function() {
+        gameTimeInterval = setInterval(() => {
+            this.deciseconds++;
+            this.showTime();
+        },100)  
+    },
+    stop: function() {
+        clearInterval(gameTimeInterval)
+        this.deciseconds = 0;
+    },
+    showTime: function() {
+
+        timer.innerText = this.getTime();
+    },
+    getTime: function() {
+        let min = Math.floor(gameTime.deciseconds/600);
+        let s = Math.floor((gameTime.deciseconds-min*600)/10);
+        let ds = gameTime.deciseconds - min*600 - s*10;
+        
+        min = String(min).padStart(2,"0");
+        s = String(s).padStart(2,"0");
+
+        return `${min}:${s}:${ds}`
+    }
+}
 const gamePanel = document.querySelector('#gamePanel');
 const tilesDivs = gamePanel.getElementsByClassName('tile');
 const showShortcutsBtn = document.querySelector('.showShortcuts');
 const shortcutsList = document.querySelector('.shortcutsList');
+const timer = document.querySelector('#timer');
 
 class Tile {
     constructor(ID,neighbours) {
@@ -135,10 +165,11 @@ function revealTile (tileID) {
         }
         //win
         if(remainingToDetonate === 0) {
+            addGameReport(true,level,gameTime.getTime());
+            gameTime.stop();
             document.querySelector('#face').style.backgroundImage = 'url("img/smilingFaceWithSunglasses.png")';
             document.querySelector('#bombCounter').innerHTML = '000';
             finished = true;
-            addGameReport(true,level);
         }
     }  
 }
@@ -148,7 +179,8 @@ function detonation (tileID) {
         if (tiles[tileID].isBomb === true) {
 
             if (firstDetonated === true) {
-                // lose
+                //lose
+                
                 revealTile(tileID);
                 isAnyBombDetonated = true; 
 
@@ -164,7 +196,8 @@ function detonation (tileID) {
                         incorrectlyFlagged++;
                     }    
                 });
-                addGameReport(false,level,remainingToDetonate,flaggedTiles,incorrectlyFlagged)
+                addGameReport(false,level,gameTime.getTime(),remainingToDetonate,flaggedTiles,incorrectlyFlagged)
+                gameTime.stop();
             } else {
                 drawBoard(size);
                 detonation(tileID);
@@ -180,8 +213,12 @@ function detonation (tileID) {
         } else {
             revealTile(tileID);
         }
-
-        firstDetonated = true;
+        if(firstDetonated === false) {
+            //game start
+            firstDetonated = true; 
+            gameTime.start();
+        }
+        
     }
 }
 function toggleFlag(tileID) {
@@ -217,6 +254,8 @@ function refreshBombCounter () {
     }
 }
 function restart() {
+    gameTime.stop();
+    gameTime.showTime();
     detonatedTiles = document.querySelectorAll(".detonatedTile");
 
     detonatedTiles.forEach( el => {
@@ -240,6 +279,8 @@ function restart() {
     
 }
 function changeLevel(currentLevel) {
+    gameTime.stop();
+    gameTime.showTime();
     document.querySelector('#face').style.backgroundImage = 'url("img/slightlySmilingFace.png")';
 
     switch(currentLevel){
@@ -282,7 +323,7 @@ function changeLevel(currentLevel) {
     level = currentLevel;
     document.querySelector('#levelButton').innerText = level;
 }
-function addGameReport (win,level,detonated,flagged,incorrectlyFlagged) {
+function addGameReport (win,level,time,detonated,flagged,incorrectlyFlagged) {
     const reports = document.querySelector('#reports');
     const newReport = document.createElement("div");
     newReport.classList.add("gameReport");
@@ -290,17 +331,18 @@ function addGameReport (win,level,detonated,flagged,incorrectlyFlagged) {
         const reportTemplate = document.querySelector('#reportWinTemplate').content.cloneNode(true);
         const reportInfos = reportTemplate.querySelectorAll('span');
         reportInfos[0].innerText = `Level: ${level}`;
-        reportInfos[1].innerText = `Time: 0:00`;
+        reportInfos[1].innerText = `Time: ${time}`;
         newReport.append(reportTemplate);
         newReport.style.setProperty("--reportColor","#025020");
     } else {
         const reportTemplate = document.querySelector('#reportLoseTemplate').content.cloneNode(true);
         const reportInfos = reportTemplate.querySelectorAll('span');
         reportInfos[0].innerText = `Level: ${level}`;
-        reportInfos[1].innerText = `Tiles left: ${detonated}`;
-        reportInfos[2].innerText = `Correctly flagged: ${flagged - incorrectlyFlagged}`;
-        reportInfos[3].innerText = `Incorrectly flagged: ${incorrectlyFlagged}`;
-        reportInfos[4].innerText = `Time: 0:00`;
+        reportInfos[1].innerText = `Time: ${time}`;
+        reportInfos[2].innerText = `Tiles left: ${detonated}`;
+        reportInfos[3].innerText = `Correctly flagged: ${flagged - incorrectlyFlagged}`;
+        reportInfos[4].innerText = `Incorrectly flagged: ${incorrectlyFlagged}`;
+        
         newReport.append(reportTemplate);
         newReport.style.setProperty("--reportColor","#700505");
     }
@@ -426,6 +468,7 @@ function toggleShortcutsListVisibility(){
         shortcutsList.style.visibility = "hidden";
     } 
 }
+
 document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("#face").addEventListener("click", function() {restart();});
     document.querySelector("#levelButton").addEventListener("click", function() {
