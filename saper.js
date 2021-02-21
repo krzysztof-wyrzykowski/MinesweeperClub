@@ -14,6 +14,7 @@ let scrollingQueue = 0;
 let scrollingDirection;
 let arrowKeyReleased = true;
 let gameTimeInterval
+let isLeftMouseBtnDown = false;
 
 const gameTime = {
     deciseconds: 0, 
@@ -180,7 +181,7 @@ function detonation (tileID) {
 
             if (firstDetonated === true) {
                 //lose
-                
+                finished = true;
                 revealTile(tileID);
                 isAnyBombDetonated = true; 
 
@@ -481,17 +482,46 @@ document.addEventListener("DOMContentLoaded", () => {
     ;});
     document.querySelector("#previousReport").addEventListener("click", function() {setTimeout(scrollReportsToLeft,0);});
     document.querySelector("#followingReport").addEventListener("click", function() {setTimeout(scrollReportsToRight,0);});
-
-    gamePanel.addEventListener("click", event => {
-        if(event.target.classList.contains("tile")) {
-           detonation(Number(event.target.dataset.tileid)); 
-        }
-        
+    
+    document.addEventListener("mousedown", event => {
+        if(event.button === 0) {
+            isLeftMouseBtnDown = true;
+        } 
     });
+    document.addEventListener("mouseup", event => {
+        if(event.button === 0) {
+            isLeftMouseBtnDown = false;
+        }
+    });
+    gamePanel.addEventListener("mouseup", event => {
+        if(event.target.classList.contains("tile") && event.button === 0) {
+            event.target.classList.remove("pressedTile");
+            detonation(Number(event.target.dataset.tileid)); 
+        }
+    });
+    gamePanel.addEventListener("mousedown", event => {
+        if(event.button === 0 && !(event.target.classList.contains("flaggedTile") || event.target.classList.contains("detonatedTile")) && !finished) {
+            event.target.classList.add("pressedTile");
+            event.target.classList.remove("coveredTile"); 
+        }
+    })
+    gamePanel.addEventListener("mouseover", event => {
+        if(isLeftMouseBtnDown && event.button === 0 && !(finished)){
+            if(event.target.classList.contains("coveredTile")){
+                event.target.classList.add("pressedTile");
+                event.target.classList.remove("coveredTile");
+            }
+            if(!(event.relatedTarget.classList.contains("detonatedTile") || event.relatedTarget.classList.contains("flaggedTile"))){
+                event.relatedTarget.classList.add("coveredTile"); 
+            }
+            event.relatedTarget.classList.remove("pressedTile");
+        }
+    })
     gamePanel.addEventListener("contextmenu", event => {
         event.preventDefault()
         toggleFlag(Number(event.target.dataset.tileid))
     });
+    
 
     //shortcuts
     document.addEventListener("keyup", event => {

@@ -130,7 +130,10 @@ body {
     border-right: var(--tileBorder) outset #d1d1d1;
     border-bottom: var(--tileBorder) outset #d1d1d1;
 }
-
+.pressedTile{
+    border: 1px solid #3f3e3e;
+    background-color: #959393;
+}
 .tile {
     width: var(--tileSize);
     height: var(--tileSize);
@@ -138,10 +141,9 @@ body {
     background-color: #959393;
 }
 
-.coveredTile:hover {
-    /* background-color:#555; */
+/* .coveredTile:hover {
     opacity: .6;
-}
+} */
 
 #reportsBox {
     margin-top: 20px;
