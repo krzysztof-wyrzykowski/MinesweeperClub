@@ -2,7 +2,7 @@ let remainingToDetonate
 let nrOfBomb = 10
 let isAnyBombDetonated 
 let flaggedTiles 
-let finished 
+let finished = false;
 let firstDetonated
 let tiles = []
 let size = 10
@@ -15,6 +15,7 @@ let scrollingDirection;
 let arrowKeyReleased = true;
 let gameTimeInterval
 let isLeftMouseBtnDown = false;
+let pressedTile;
 
 const gameTime = {
     deciseconds: 0, 
@@ -257,6 +258,7 @@ function refreshBombCounter () {
 function restart() {
     gameTime.stop();
     gameTime.showTime();
+
     detonatedTiles = document.querySelectorAll(".detonatedTile");
 
     detonatedTiles.forEach( el => {
@@ -506,7 +508,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     })
     gamePanel.addEventListener("mouseover", event => {
-        if(isLeftMouseBtnDown && event.button === 0 && !(finished)){
+        if(isLeftMouseBtnDown && event.button === 0 && !finished){
+    
+            if(!(event.target === gamePanel)){
+                 pressedTile = event.target;
+            }
+           
             if(event.target.classList.contains("coveredTile")){
                 event.target.classList.add("pressedTile");
                 event.target.classList.remove("coveredTile");
@@ -516,6 +523,17 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             event.relatedTarget.classList.remove("pressedTile");
         }
+    })
+    gamePanel.addEventListener("mouseleave", event => {
+        if(isLeftMouseBtnDown){ 
+            pressedTile.classList.remove("pressedTile");
+            if(!(pressedTile.classList.contains("flaggedTile") || pressedTile.classList.contains("detonatedTile"))) {
+                pressedTile.classList.add("coveredTile");
+            }
+            
+            console.log("leave")
+        }
+        
     })
     gamePanel.addEventListener("contextmenu", event => {
         event.preventDefault()
