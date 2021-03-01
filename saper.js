@@ -1,21 +1,23 @@
-let remainingToDetonate 
-let nrOfBomb = 10
-let isAnyBombDetonated 
-let flaggedTiles 
+let remainingToDetonate ;
+let nrOfBomb = 10;
+let isAnyBombDetonated;
+let flaggedTiles;
 let finished = false;
-let firstDetonated
-let tiles = []
-let size = 10
-let level = 1
-let boardsHTML = []
+let firstDetonated = false;
+let tiles = [];
+let size = 10;
+let level = 1;
+let boardsHTML = [];
 let nrOfGameReports = 0;
 let scrollingReportsInProgres = false;
 let scrollingQueue = 0;
 let scrollingDirection;
 let arrowKeyReleased = true;
-let gameTimeInterval
+let gameTimeInterval;
 let isLeftMouseBtnDown = false;
 let pressedTile;
+let confirmationRequestShowed = false;
+const scrollPosition = {};
 
 const gameTime = {
     deciseconds: 0, 
@@ -50,6 +52,8 @@ const tilesDivs = gamePanel.getElementsByClassName('tile');
 const showShortcutsBtn = document.querySelector('.showShortcuts');
 const shortcutsList = document.querySelector('.shortcutsList');
 const timer = document.querySelector('#timer');
+const darkBackground = document.querySelector('.darkBackground')
+const darkBackgroundMsg = darkBackground.querySelector('.message')
 
 class Tile {
     constructor(ID,neighbours) {
@@ -255,7 +259,20 @@ function refreshBombCounter () {
             document.querySelector('#bombCounter').innerHTML = nrOfBomb-flaggedTiles;
     }
 }
-function restart() {
+function restartRequest() {
+    if(confirmationRequestShowed || (!finished && !firstDetonated)) {return;}
+    if(!finished && firstDetonated) {
+        restart(true);
+    }
+    if(finished && firstDetonated) {
+        restart(false);
+    }
+}
+function restart(confirmationNeeded) {
+    if(confirmationNeeded){
+        showConfirmation(restart,"Do you really want to finish game?");
+        return;
+    }
     gameTime.stop();
     gameTime.showTime();
 
@@ -279,14 +296,25 @@ function restart() {
 
     drawBoard(size);
     refreshBombCounter();
-    
 }
-function changeLevel(currentLevel) {
+function changeLvlRequest(lvlToChange) {
+    if(confirmationRequestShowed ) {return;}
+    if(!finished && firstDetonated) {
+        changeLevel(true,lvlToChange);
+    } else {
+        changeLevel(false,lvlToChange);
+    }
+}
+function changeLevel(confirmationNeeded,lvlToChange) {
+    if(confirmationNeeded){
+        showConfirmation(changeLevel,"Do you really want to change level?",lvlToChange);
+        return;
+    }
     gameTime.stop();
     gameTime.showTime();
     document.querySelector('#face').style.backgroundImage = 'url("img/slightlySmilingFace.png")';
 
-    switch(currentLevel){
+    switch(lvlToChange){
         case 1: 
             size = 10;
             nrOfBomb = 10;
@@ -323,7 +351,7 @@ function changeLevel(currentLevel) {
 
     refreshBombCounter();
 
-    level = currentLevel;
+    level = lvlToChange;
     document.querySelector('#levelButton').innerText = level;
 }
 function addGameReport (win,level,time,detonated,flagged,incorrectlyFlagged) {
@@ -404,13 +432,11 @@ function scrollReportsToLeft() {
             } else if(scrollingQueue>0){
                 scrollingQueue-=1;
                 scrollReportsToLeft();
-            }
-            
+            } 
         }
     }
 
     reports.addEventListener("scroll", checkScrollingProgress)
-    // tutaj było wywołanie funkcji checkScrollingProgress nie wiem dlaczego
     scrollingReportsInProgres = true;
     scrollingDirection = "left";
     reports.scrollTo({
@@ -469,16 +495,77 @@ function toggleShortcutsListVisibility(){
         shortcutsList.style.visibility = "visible";
     } else {
         shortcutsList.style.visibility = "hidden";
-    } 
+    }
+}
+
+
+function showConfirmation(fn,message,...param) {
+    darkBackground.style.setProperty("--confirmationTop", window.scrollY+300+"px");
+    darkBackground.style.height = document.body.clientHeight+"px";
+    
+    darkBackgroundMsg.innerText = message;
+    confirmationRequestShowed = true;
+    
+    const confirmBtn = darkBackground.querySelector("#yes");
+    const cancelBtn = darkBackground.querySelector("#cancel");
+
+    scrollPosition.x = window.scrollX;
+    scrollPosition.y = window.scrollY;
+    window.addEventListener('scroll', noScroll);
+    darkBackground.style.visibility = "visible";
+
+    confirmBtn.addEventListener("click", confirmed);
+    cancelBtn.addEventListener("click", canceled);
+    document.addEventListener("keydown", addConfirmationShortcuts);
+
+    function addConfirmationShortcuts(event) {
+        if(event.key === "Enter"){
+            confirmed();
+        }  
+        if(event.key.toUpperCase() === "C"){
+            canceled();
+        }
+            
+    }
+
+    function confirmed() {
+        darkBackground.style.visibility = "hidden";
+        darkBackground.style.height = "0px";
+        window.removeEventListener('scroll', noScroll);
+        
+        confirmBtn.removeEventListener("click", confirmed);
+        cancelBtn.removeEventListener("click", canceled);
+        document.removeEventListener("keydown", addConfirmationShortcuts);
+
+        fn(false,...param);
+        confirmationRequestShowed = false;
+        
+    }
+    function canceled() {
+        darkBackground.style.visibility = "hidden";
+        darkBackground.style.height = "0px";
+        window.removeEventListener('scroll', noScroll);
+        
+        confirmBtn.removeEventListener("click", confirmed);
+        cancelBtn.removeEventListener("click", canceled);
+        document.removeEventListener("keydown", addConfirmationShortcuts);
+
+        confirmationRequestShowed = false;
+    }
+    
+    
+}
+function noScroll() {
+    window.scrollTo(scrollPosition.x,scrollPosition.y);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    document.querySelector("#face").addEventListener("click", function() {restart();});
+    document.querySelector("#face").addEventListener("click", function() {restartRequest();});
     document.querySelector("#levelButton").addEventListener("click", function() {
         if(level >= 3){
-            changeLevel(1) 
+            changeLvlRequest(1);
         } else {
-            changeLevel(level+1)
+            changeLvlRequest(level+1);
         }
         
     ;});
@@ -530,14 +617,12 @@ document.addEventListener("DOMContentLoaded", () => {
             if(!(pressedTile.classList.contains("flaggedTile") || pressedTile.classList.contains("detonatedTile"))) {
                 pressedTile.classList.add("coveredTile");
             }
-            
-            console.log("leave")
         }
         
     })
     gamePanel.addEventListener("contextmenu", event => {
-        event.preventDefault()
-        toggleFlag(Number(event.target.dataset.tileid))
+        event.preventDefault();
+        toggleFlag(Number(event.target.dataset.tileid));
     });
     
 
@@ -549,23 +634,24 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     document.addEventListener("keydown", event => {
         if(event.key === "1" && level !== 1) {
-            changeLevel(1);
+            changeLvlRequest(1);
             return;
         }
         if(event.key === "2" && level !== 2) {
-            changeLevel(2);
+            changeLvlRequest(2);
             return;
         }
         if(event.key === "3" && level !== 3) {
-            changeLevel(3);
+            changeLvlRequest(3);
             return;
         }
         if(event.key.toUpperCase() === "R" ) {
-            restart();
+            restartRequest();
             return;
         }
         if(event.key.toUpperCase() === "S") {
             toggleShortcutsListVisibility();
+            return;
         }
         if(event.key === "ArrowRight") {
             event.preventDefault();

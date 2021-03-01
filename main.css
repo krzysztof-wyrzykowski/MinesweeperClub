@@ -130,10 +130,12 @@ body {
     border-right: var(--tileBorder) outset #d1d1d1;
     border-bottom: var(--tileBorder) outset #d1d1d1;
 }
-.pressedTile{
+
+.pressedTile {
     border: 1px solid #3f3e3e;
     background-color: #959393;
 }
+
 .tile {
     width: var(--tileSize);
     height: var(--tileSize);
@@ -241,58 +243,101 @@ body {
     top: 17px;
     width: 100px;
     height: 80px;
-    padding:  0 10px 5px 10px;
+    padding: 0 10px 5px 10px;
     background-image: url("img/keyboard.png");
     background-size: cover;
     background-color: #c0c0c0;
     background-origin: content-box;
     background-repeat: no-repeat;
 }
+
 .shortcutsList {
-	 position: relative; 
+    position: relative;
     left: -20px;
     top: 97px;
     min-height: 500px;
     width: 400px;
     background: #007394;
     border-radius: 10px;
-    border: 5px solid #ddd;
-    color: #ddd;
+    border: 5px solid #DDD;
+    color: #DDD;
     visibility: hidden;
     pointer-events: none;
 }
 
 .shortcutsList:after {
-	content: '';
-	position: absolute;
-	top: 0;
-	left: 45px;
-	width: 0;
-	height: 0;
-	border: 20px solid transparent;
-	border-bottom-color: #ddd;
-	border-top: 0;
-	margin-left: -20px;
-	margin-top: -20px;
-}.shortcut{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 45px;
+    width: 0;
+    height: 0;
+    border: 20px solid transparent;
+    border-bottom-color: #DDD;
+    border-top: 0;
+    margin-left: -20px;
+    margin-top: -20px;
+}
+
+.shortcut {
     margin: 20px;
     height: 80px;
 }
-.shortcutBtn{
+
+.shortcutBtn {
     width: 80px;
     height: 80px;
     border-radius: 5px;
-    border: 5px solid #ddd;
+    border: 5px solid #DDD;
     font-size: 40px;
     line-height: 70px;
     text-align: center;
     float: left;
 }
-.shortcutDescription{
+
+.shortcutDescription {
     margin-left: 10px;
     width: 260px;
     font-size: 12px;
     line-height: 80px;
     text-align: center;
     float: left;
+}
+
+.darkBackground {
+    --confirmationTop: 0;
+    visibility: hidden;
+    position: absolute;
+    width: 100%;
+    background-color: rgb(0, 0, 0,0.5);
+    z-index: 1;
+}
+
+.restartConfirmation {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: var(--confirmationTop);
+    width: 700px;
+    height: 200px;
+    background-color: #007394 ;
+    border: #DDD 10px solid;
+    border-radius: 10px;
+    padding: 30px;
+    text-align: center;
+    color: #DDD;
+}
+.confirmationBtn {
+    display: inline-block;
+    margin-top: 40px;
+    width: 300px;
+    height: 50px;
+    border: #DDD solid 5px;
+    padding: 10px;
+    border-radius: 5px;
+    line-height: 20px;
+    cursor: pointer;
+}
+.confirmationBtn:hover {
+    background-color: #DDD;
+    color: #007394;
 }
